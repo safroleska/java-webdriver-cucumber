@@ -3,6 +3,7 @@ package definitions;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -26,6 +27,7 @@ public class JavaStepDefs {
         System.out.println(str1.toUpperCase());
         System.out.println(str1.length());
         System.out.println(str1.equals("var1"));
+
     }
 
 
@@ -73,4 +75,23 @@ public class JavaStepDefs {
             System.out.println(fruit);
         }
     }
+
+    @And("I print {int} th day of week")
+    public void iPrintThDayOfWeek(int i) {
+        String[] days= {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
+        System.out.println(days[i-1]);
+    }
+
+    @And("I print if number {int} is positive")
+    public void iPrintIfNumberIsPositive(int num) {
+        if (num>=0) {
+            System.out.println(num + " is positive");
+        } else {
+            System.out.println(num+ " is negative");
+        }
+
+    }
+
+
+
 }
