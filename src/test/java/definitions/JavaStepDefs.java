@@ -28,6 +28,7 @@ public class JavaStepDefs {
         System.out.println(str1.length());
         System.out.println(str1.equals("var1"));
 
+
     }
 
 
@@ -48,32 +49,39 @@ public class JavaStepDefs {
 
     @And("I work with arrays")
     public void iWorkWithArrays() {
-        int[] nums= {7, 2, 5, 10, 1, 3};
-        for (int i:nums){
-            System.out.print(i+" ");
-        }
-        System.out.println();
-        String[] fruits={"kiwi", "apple", "orange"};
-        for (String fruit: fruits){
-            System.out.print(fruit + " ");
-        }
-        System.out.println();
-        System.out.println(fruits[0]);
+//        int[] nums= {7, 2, 5, 10, 1, 3};
+//        for (int i:nums){
+//            System.out.print(i+" ");
+//        }
+//        System.out.println();
+//        String[] fruits={"kiwi", "apple", "orange"};
+//        for (String fruit: fruits){
+//            System.out.print(fruit + " ");
+//        }
+//        System.out.println();
+//        System.out.println(fruits[0]);
 //        List<Integer> listOfnums= Arrays.asList(7, 2, 5, 10, 1, 3);
-        List<Integer> listOfnums= new ArrayList<>();
-        listOfnums.add(10);
-        listOfnums.add(9);
-        listOfnums.add(8);
-        for (Integer i:listOfnums) {
-            System.out.print(i + " ");
+//        List<Integer> listOfnums= new ArrayList<>();
+//        listOfnums.add(10);
+//        listOfnums.add(9);
+//        listOfnums.add(8);
+//        for (Integer i:listOfnums) {
+//            System.out.print(i + " ");
+//        }
+//        List<String> listOfStrings= new ArrayList<>();
+//        listOfStrings.add("kiwi");
+//        listOfStrings.add("apple");
+//        listOfStrings.add("orange");
+//        for (String fruit: listOfStrings){
+//            System.out.println(fruit);
+//        }
+        String[] shopList={"milk", "bread", "eggs", "tea", "chocolate"};
+        System.out.println("My shopping list: ");
+        for (String i:shopList){
+            System.out.println(i+ " ");
         }
-        List<String> listOfStrings= new ArrayList<>();
-        listOfStrings.add("kiwi");
-        listOfStrings.add("apple");
-        listOfStrings.add("orange");
-        for (String fruit: listOfStrings){
-            System.out.println(fruit);
-        }
+        System.out.println(shopList[0]);//print milk
+        System.out.println(shopList[3]);//print tea
     }
 
     @And("I print {int} th day of week")
@@ -93,5 +101,39 @@ public class JavaStepDefs {
     }
 
 
+    @Given("I work with integers")
+    public void iWorkWithIntegers() {
+        System.out.println(14/7);//result is int
+        System.out.println(50.0/2);//result is float
+        int num1=30;
+        int num2=5;
+        int sum=num1+num2;
+        int difference=num1-num2;
+        int quotient=num1/num2;
+        int product=num1*num2;
+        System.out.println("The sum is "+ sum);
+        System.out.println("The difference is "+ difference);
+        System.out.println("The quotient is "+ quotient);
+        System.out.println("The product is "+ product);
 
+    }
+
+    @And("I work with boolean")
+    public void iWorkWithBoolean() {
+        String notFavouriteColor= "brown";
+        System.out.println(notFavouriteColor.equals("blue"));//false
+        System.out.println(notFavouriteColor.equals("brown"));//true
+    }
+
+
+    @And("I print url for {string} page")
+    public void iPrintUrlForPage(String site) {
+        if (site.equalsIgnoreCase("google")) {
+            System.out.println("https://www.google.com/");
+        } else if (site.equalsIgnoreCase("Sample")){
+            System.out.println("www.sample.com");
+        } else{
+            System.out.println("I don't know this site");
+        }
+    }
 }
