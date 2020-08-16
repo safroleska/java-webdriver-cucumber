@@ -4,9 +4,7 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 
 import java.sql.SQLOutput;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class JavaStepDefs {
     @Given("I say hello world")
@@ -135,5 +133,52 @@ public class JavaStepDefs {
         } else{
             System.out.println("I don't know this site");
         }
+    }
+
+    @And("I print {string} day of week")
+    public void iPrintDayOfWeek(String day) {
+        String[] daysOfWeek = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
+        int index= Integer.valueOf(day)-1;
+        System.out.println(daysOfWeek[index]);
+    }
+
+    @And("I print every {int} rd day of week")
+    public void iPrintEveryRdDayOfWeek(int every) {
+        String[] daysOfweek = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
+        int i=1;
+        for (String day: daysOfweek){
+            if (i% every ==0){
+                System.out.println(day);
+            }
+            i++;
+        }
+        System.out.println("------");
+        for (int j=1; j <= daysOfweek.length; j++){
+            if (j % every ==0){
+                System.out.println(daysOfweek[j-1]);
+            }
+        }
+        System.out.println("------");
+        for (int k=every; k <= daysOfweek.length; k=k+every) {
+            System.out.println(daysOfweek[k - 1]);
+        }
+    }
+
+    @And("I work with maps")
+    public void iWorkWithMaps() {
+        Map<String, String> user = new HashMap<>();
+        user.put("username","jdoe");
+        user.put("email","john@doe.example.com");
+        user.put("password","welcome");
+        System.out.println(user);
+
+        Map<String, String> admin = new HashMap<>();
+        admin.put("username","admin");
+        admin.put("email","admin@admin.example.com");
+        admin.put("password","12345");
+        System.out.println(admin);
+
+        System.out.println("password");
+        System.out.println("email");
     }
 }
