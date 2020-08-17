@@ -28,4 +28,11 @@
       Given I go to "quote" page
       When I fill out optional fields
 
+    @market5
+    Scenario: Verify fields values recorded correctly
+      Given I go to "quote" page
+      When I fill out required fields
+      And I submit the form
+      Then I verify that fields values recorded correctly
+
 

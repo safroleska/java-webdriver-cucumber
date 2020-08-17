@@ -2,6 +2,7 @@ package definitions;
 
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
+import cucumber.api.java.hu.Ha;
 
 import java.sql.SQLOutput;
 import java.util.*;
@@ -166,19 +167,24 @@ public class JavaStepDefs {
 
     @And("I work with maps")
     public void iWorkWithMaps() {
-        Map<String, String> user = new HashMap<>();
-        user.put("username","jdoe");
-        user.put("email","john@doe.example.com");
-        user.put("password","welcome");
-        System.out.println(user);
+//        Map<String, String> user = new HashMap<>();
+//        user.put("username","jdoe");
+//        user.put("email","john@doe.example.com");
+//        user.put("password","welcome");
+//        System.out.println(user);
+//
+//        Map<String, String> admin = new HashMap<>();
+//        admin.put("username","admin");
+//        admin.put("email","admin@admin.example.com");
+//        admin.put("password","12345");
+//        System.out.println(admin);
+//
+//        System.out.println("password");
+//        System.out.println("email");
 
-        Map<String, String> admin = new HashMap<>();
-        admin.put("username","admin");
-        admin.put("email","admin@admin.example.com");
-        admin.put("password","12345");
-        System.out.println(admin);
-
-        System.out.println("password");
-        System.out.println("email");
+        Map<String,String> info = new HashMap<>();
+        info.put("firstName", "George");
+        info.put("middleName", "John");
+        System.out.println(info);
     }
 }

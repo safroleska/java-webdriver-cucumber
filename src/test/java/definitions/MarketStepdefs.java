@@ -106,4 +106,16 @@ public class MarketStepdefs {
 
 
     }
+
+    @Then("I verify that fields values recorded correctly")
+    public void iVerifyThatFieldsValuesRecordedCorrectly() {
+        assertThat(getDriver().findElement(By.xpath("//*[@id='quotePageResult']")).isDisplayed());
+        assertThat(getDriver().findElement(By.xpath("//b[@name='firstName']")).getText()).isEqualTo("Chandler");
+        assertThat(getDriver().findElement(By.xpath("//b[@name='lastName']")).getText()).isEqualTo("Bing");
+        assertThat(getDriver().findElement(By.xpath("//b[@name='name']")).getText()).isEqualTo("Chandler Bing");
+        assertThat(getDriver().findElement(By.xpath("//b[@name='username']")).getText()).isEqualTo("test");
+        assertThat(getDriver().findElement(By.xpath("//b[@name='email']")).getText()).isEqualTo("test@mail.com");
+        assertThat(getDriver().findElement(By.xpath("//b[@name='password']")).getText()).isNotEqualTo("12345");
+
+    }
 }
