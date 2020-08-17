@@ -186,5 +186,10 @@ public class JavaStepDefs {
         info.put("firstName", "George");
         info.put("middleName", "John");
         System.out.println(info);
+        String add = info.get("firstName");
+        info.put("firstName",info.get("middleName"));
+        info.put("middleName",add);
+        System.out.println(info);
     }
+
 }
