@@ -6,6 +6,7 @@ import cucumber.api.java.en.When;
 import org.openqa.selenium.By;
 
 
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static support.TestContext.getDriver;
 
@@ -25,9 +26,10 @@ public class UspsStepdefs {
         getDriver().findElement(By.xpath("//*[@id='zip-by-address']")).click();
     }
 
-    @Then("I validate {string} zip code exists in the result")
-    public void iValidateZipCodeExistsInTheResult(String zip) {
-        assertThat(getDriver().findElement(By.xpath("//*[@id='zipByAddressDiv']")).isDisplayed());
 
+    @Then("I validate {string} zip code exists in the result")
+    public void iValidateZipCodeExistsInTheResult(String zip) throws InterruptedException {
+        Thread.sleep(2000);
+        assertThat(getDriver().findElement(By.xpath("//*[@id='zipByAddressDiv']")).getText()).contains(zip);
     }
 }
