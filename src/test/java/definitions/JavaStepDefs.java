@@ -182,7 +182,7 @@ public class JavaStepDefs {
 //        System.out.println("password");
 //        System.out.println("email");
 
-        Map<String,String> info = new HashMap<>();
+        Map<String,String> info = new LinkedHashMap<>();
         info.put("firstName", "George");
         info.put("middleName", "John");
         System.out.println(info);
@@ -192,4 +192,64 @@ public class JavaStepDefs {
         System.out.println(info);
     }
 
+    @Given("I solve coding challenges")
+    public void iSolveCodingChallenges() {
+        System.out.println("I solve coding challenges");
+        //swap
+        swap(5, 3);
+        Map<String,String> info = new LinkedHashMap<>();
+        info.put("firstName", "George");
+        info.put("middleName", "John");
+//        swapMap(Map<>info);
+    }
+
+    void swap(int a, int b){
+        System.out.println("swap method>>>");
+        System.out.println("a: "+a);
+        System.out.println("b: "+b);
+
+
+        int temp = a;
+        a = b;
+        b = temp;
+    }
+    void swapMap(Map<String, String> info) {
+        System.out.println("swap method>>>>>");
+        System.out.println("info: "+info);
+
+        String add = info.get("firstName");
+        info.put("firstName",info.get("middleName"));
+        info.put("middleName",add);
+
+        System.out.println("info: "+info);
+    }
+
+
+    @And("I swaps two array	elements – {int} rd	and	{int} th")
+    public void iSwapsTwoArrayElementsRdAndTh(int x, int y) {
+        int[] array = {5, 2, 9, 7, 3};
+//        for (int i : array) {
+//            System.out.print(i);
+//        }
+//        System.out.println();
+        int temp = array[x - 1];
+        array[x - 1] = array[y - 1];
+        array[y - 1] = temp;
+        for (int i : array) {
+            System.out.print(i);
+        }
+    }
+
+    @And("I return if {int} divisible by {int} or {int}")
+    public void iReturnIfDivisibleByOr(int number, int num1, int num2) {
+        if (number%num1==0 && number%num2==0) {
+            System.out.println(number + " is divisible by " + num1 + " and " + num2);
+        }else if (number%num1==0){
+            System.out.println(number+" is divisible by "+num1);
+        }else if (number%num2==0){
+            System.out.println(number+ " is divisible by "+num2);
+        } else {
+            System.out.println(number +" is not divisible neither by "+num1+" nor "+num2);
+        }
+    }
 }

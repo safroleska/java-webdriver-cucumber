@@ -5,6 +5,9 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.openqa.selenium.By;
+import org.openqa.selenium.logging.LogEntries;
+import org.openqa.selenium.logging.LogEntry;
+import org.openqa.selenium.logging.LogType;
 
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -13,12 +16,25 @@ import static support.TestContext.*;
 public class MarketStepdefs {
     @Given("I go to {string} page")
     public void iGoToPage(String page) throws InterruptedException {
+//        switch (page){
+//            case "quote": getDriver().get("https://skryabin.com/market/quote.html");
+//            break;
+//            case
+
+
+//        default:
+//            throw new RuntimeException("Unsupported page! "+page);
+//        }
+
+
         if (page.equalsIgnoreCase("quote")) {
             getDriver().get("https://skryabin.com/market/quote.html");
         } else if(page.equalsIgnoreCase("google")) {
             getDriver().get("https://www.google.com/");
-        } else if (page.equalsIgnoreCase("yahoo")){
+        } else if (page.equalsIgnoreCase("yahoo")) {
             getDriver().get("https://www.yahoo.com/");
+        }else if (page.equalsIgnoreCase("usps")){
+            getDriver().get("https://www.usps.com/");
         } else {
             throw new RuntimeException("Unsupported page! "+page);
         }
@@ -109,13 +125,34 @@ public class MarketStepdefs {
 
     @Then("I verify that fields values recorded correctly")
     public void iVerifyThatFieldsValuesRecordedCorrectly() {
-        assertThat(getDriver().findElement(By.xpath("//*[@id='quotePageResult']")).isDisplayed());
-        assertThat(getDriver().findElement(By.xpath("//b[@name='firstName']")).getText()).isEqualTo("Chandler");
-        assertThat(getDriver().findElement(By.xpath("//b[@name='lastName']")).getText()).isEqualTo("Bing");
-        assertThat(getDriver().findElement(By.xpath("//b[@name='name']")).getText()).isEqualTo("Chandler Bing");
-        assertThat(getDriver().findElement(By.xpath("//b[@name='username']")).getText()).isEqualTo("test");
-        assertThat(getDriver().findElement(By.xpath("//b[@name='email']")).getText()).isEqualTo("test@mail.com");
-        assertThat(getDriver().findElement(By.xpath("//b[@name='password']")).getText()).isNotEqualTo("12345");
+        String result = getDriver().findElement(By.xpath("//*[@id='quotePageResult']")).getText();
+        assertThat(result).containsIgnoringCase("Chandler Bing");
+        assertThat(result).containsIgnoringCase("test");
+        assertThat(result).containsIgnoringCase("test@mail.com");
+        assertThat(result).doesNotContain("12345");
 
+
+
+
+//        assertThat(getDriver().findElement(By.xpath("//*[@id='quotePageResult']")).isDisplayed());
+//        assertThat(getDriver().findElement(By.xpath("//b[@name='firstName']")).getText()).isEqualTo("Chandler");
+//        assertThat(getDriver().findElement(By.xpath("//b[@name='lastName']")).getText()).isEqualTo("Bing");
+//        assertThat(getDriver().findElement(By.xpath("//b[@name='name']")).getText()).isEqualTo("Chandler Bing");
+//        assertThat(getDriver().findElement(By.xpath("//b[@name='username']")).getText()).isEqualTo("test");
+//        assertThat(getDriver().findElement(By.xpath("//b[@name='email']")).getText()).isEqualTo("test@mail.com");
+//        assertThat(getDriver().findElement(By.xpath("//b[@name='password']")).getText()).isNotEqualTo("12345");
+
+    }
+
+    @And("I print logs to the console")
+    public void iPrintLogsToTheConsole() {
+       LogEntries logs =  getDriver().manage().logs().get(LogType.BROWSER);
+        System.out.println("Logs begin>>>>");
+
+        for (LogEntry log: logs){
+            System.out.println(log);
+        }
+
+        System.out.println("Logs end>>>>");
     }
 }

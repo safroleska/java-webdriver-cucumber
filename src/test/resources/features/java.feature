@@ -11,7 +11,7 @@
 #      And I print if number 35 is positive
 #      And I print "7" day of week
 #      And I print every 3 rd day of week
-      And I work with maps
+#      And I work with maps
 
 
 
@@ -24,4 +24,10 @@
 #      Given I work with integers
 #      And I work with boolean
       And I print url for "yandex" page
+
+    @java4
+    Scenario: Challenges
+      Given I solve coding challenges
+      And I swaps two array	elements – 3 rd	and	5 th
+      And I return if 10 divisible by 3 or 4
 
