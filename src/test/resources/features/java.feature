@@ -15,6 +15,7 @@
 
 
 
+
     @java2
     Scenario: String exercise
       Given My name is "John Doe"
@@ -30,4 +31,14 @@
       Given I solve coding challenges
       And I swaps two array	elements – 3 rd	and	5 th
       And I return if 10 divisible by 3 or 4
+
+    @java5
+    Scenario: Homework #8
+      And I print all numbers from 0 up to n
+      And I print also negative numbers
+      And I print all integer array
+      And I print all even numbers from integer array
+      And I check if array is empty
+      And I check if array contains another element
+#      And I print all the numbers up to the argument
 

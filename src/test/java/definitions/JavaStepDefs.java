@@ -20,8 +20,8 @@ public class JavaStepDefs {
 
     @And("I perform actions with {string} and {string}")
     public void iPerformActionsWithAnd(String str1, String str2) {
-        System.out.println( "str1:" + str1);
-        System.out.println( "str2:" + str2);
+        System.out.println("str1:" + str1);
+        System.out.println("str2:" + str2);
 
         System.out.println(str1.toUpperCase());
         System.out.println(str1.length());
@@ -37,7 +37,7 @@ public class JavaStepDefs {
         String lastName = "Doe";
         String color = "blue";
         System.out.println("My name is " + name);
-        System.out.println( "My name is " + firstName+ " "+lastName+ ". My favourite color is "+color+"!");
+        System.out.println("My name is " + firstName + " " + lastName + ". My favourite color is " + color + "!");
         System.out.println(firstName.toLowerCase());
         System.out.println(color.toUpperCase());
         System.out.println(lastName.length());
@@ -74,10 +74,10 @@ public class JavaStepDefs {
 //        for (String fruit: listOfStrings){
 //            System.out.println(fruit);
 //        }
-        String[] shopList={"milk", "bread", "eggs", "tea", "chocolate"};
+        String[] shopList = {"milk", "bread", "eggs", "tea", "chocolate"};
         System.out.println("My shopping list: ");
-        for (String i:shopList){
-            System.out.println(i+ " ");
+        for (String i : shopList) {
+            System.out.println(i + " ");
         }
         System.out.println(shopList[0]);//print milk
         System.out.println(shopList[3]);//print tea
@@ -85,16 +85,16 @@ public class JavaStepDefs {
 
     @And("I print {int} th day of week")
     public void iPrintThDayOfWeek(int i) {
-        String[] days= {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
-        System.out.println(days[i-1]);
+        String[] days = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
+        System.out.println(days[i - 1]);
     }
 
     @And("I print if number {int} is positive")
     public void iPrintIfNumberIsPositive(int num) {
-        if (num>=0) {
+        if (num >= 0) {
             System.out.println(num + " is positive");
         } else {
-            System.out.println(num+ " is negative");
+            System.out.println(num + " is negative");
         }
 
     }
@@ -102,24 +102,24 @@ public class JavaStepDefs {
 
     @Given("I work with integers")
     public void iWorkWithIntegers() {
-        System.out.println(14/7);//result is int
-        System.out.println(50.0/2);//result is float
-        int num1=30;
-        int num2=5;
-        int sum=num1+num2;
-        int difference=num1-num2;
-        int quotient=num1/num2;
-        int product=num1*num2;
-        System.out.println("The sum is "+ sum);
-        System.out.println("The difference is "+ difference);
-        System.out.println("The quotient is "+ quotient);
-        System.out.println("The product is "+ product);
+        System.out.println(14 / 7);//result is int
+        System.out.println(50.0 / 2);//result is float
+        int num1 = 30;
+        int num2 = 5;
+        int sum = num1 + num2;
+        int difference = num1 - num2;
+        int quotient = num1 / num2;
+        int product = num1 * num2;
+        System.out.println("The sum is " + sum);
+        System.out.println("The difference is " + difference);
+        System.out.println("The quotient is " + quotient);
+        System.out.println("The product is " + product);
 
     }
 
     @And("I work with boolean")
     public void iWorkWithBoolean() {
-        String notFavouriteColor= "brown";
+        String notFavouriteColor = "brown";
         System.out.println(notFavouriteColor.equals("blue"));//false
         System.out.println(notFavouriteColor.equals("brown"));//true
     }
@@ -129,9 +129,9 @@ public class JavaStepDefs {
     public void iPrintUrlForPage(String site) {
         if (site.equalsIgnoreCase("google")) {
             System.out.println("https://www.google.com/");
-        } else if (site.equalsIgnoreCase("Sample")){
+        } else if (site.equalsIgnoreCase("Sample")) {
             System.out.println("www.sample.com");
-        } else{
+        } else {
             System.out.println("I don't know this site");
         }
     }
@@ -139,28 +139,28 @@ public class JavaStepDefs {
     @And("I print {string} day of week")
     public void iPrintDayOfWeek(String day) {
         String[] daysOfWeek = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
-        int index= Integer.valueOf(day)-1;
+        int index = Integer.valueOf(day) - 1;
         System.out.println(daysOfWeek[index]);
     }
 
     @And("I print every {int} rd day of week")
     public void iPrintEveryRdDayOfWeek(int every) {
         String[] daysOfweek = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
-        int i=1;
-        for (String day: daysOfweek){
-            if (i% every ==0){
+        int i = 1;
+        for (String day : daysOfweek) {
+            if (i % every == 0) {
                 System.out.println(day);
             }
             i++;
         }
         System.out.println("------");
-        for (int j=1; j <= daysOfweek.length; j++){
-            if (j % every ==0){
-                System.out.println(daysOfweek[j-1]);
+        for (int j = 1; j <= daysOfweek.length; j++) {
+            if (j % every == 0) {
+                System.out.println(daysOfweek[j - 1]);
             }
         }
         System.out.println("------");
-        for (int k=every; k <= daysOfweek.length; k=k+every) {
+        for (int k = every; k <= daysOfweek.length; k = k + every) {
             System.out.println(daysOfweek[k - 1]);
         }
     }
@@ -182,13 +182,13 @@ public class JavaStepDefs {
 //        System.out.println("password");
 //        System.out.println("email");
 
-        Map<String,String> info = new LinkedHashMap<>();
+        Map<String, String> info = new LinkedHashMap<>();
         info.put("firstName", "George");
         info.put("middleName", "John");
         System.out.println(info);
         String add = info.get("firstName");
-        info.put("firstName",info.get("middleName"));
-        info.put("middleName",add);
+        info.put("firstName", info.get("middleName"));
+        info.put("middleName", add);
         System.out.println(info);
     }
 
@@ -197,31 +197,32 @@ public class JavaStepDefs {
         System.out.println("I solve coding challenges");
         //swap
         swap(5, 3);
-        Map<String,String> info = new LinkedHashMap<>();
+        Map<String, String> info = new LinkedHashMap<>();
         info.put("firstName", "George");
         info.put("middleName", "John");
 //        swapMap(Map<>info);
     }
 
-    void swap(int a, int b){
+    void swap(int a, int b) {
         System.out.println("swap method>>>");
-        System.out.println("a: "+a);
-        System.out.println("b: "+b);
+        System.out.println("a: " + a);
+        System.out.println("b: " + b);
 
 
         int temp = a;
         a = b;
         b = temp;
     }
+
     void swapMap(Map<String, String> info) {
         System.out.println("swap method>>>>>");
-        System.out.println("info: "+info);
+        System.out.println("info: " + info);
 
         String add = info.get("firstName");
-        info.put("firstName",info.get("middleName"));
-        info.put("middleName",add);
+        info.put("firstName", info.get("middleName"));
+        info.put("middleName", add);
 
-        System.out.println("info: "+info);
+        System.out.println("info: " + info);
     }
 
 
@@ -242,14 +243,74 @@ public class JavaStepDefs {
 
     @And("I return if {int} divisible by {int} or {int}")
     public void iReturnIfDivisibleByOr(int number, int num1, int num2) {
-        if (number%num1==0 && number%num2==0) {
+        if (number % num1 == 0 && number % num2 == 0) {
             System.out.println(number + " is divisible by " + num1 + " and " + num2);
-        }else if (number%num1==0){
-            System.out.println(number+" is divisible by "+num1);
-        }else if (number%num2==0){
-            System.out.println(number+ " is divisible by "+num2);
+        } else if (number % num1 == 0) {
+            System.out.println(number + " is divisible by " + num1);
+        } else if (number % num2 == 0) {
+            System.out.println(number + " is divisible by " + num2);
         } else {
-            System.out.println(number +" is not divisible neither by "+num1+" nor "+num2);
+            System.out.println(number + " is not divisible neither by " + num1 + " nor " + num2);
+        }
+    }
+
+    @And("I print all numbers from {int} up to n")
+    public void iPrintAllNumbersFromUpToN(int arg0) {
+        int n = 10;
+        int[] array = {1, 5, 3, 10, 25, -2, 0, 8};
+        for (int i = 0; i < array.length; i++) {
+            if (0 <= array[i] && array[i] <= n) {
+                System.out.print(array[i] + ", ");
+            }
+
+        }
+
+    }
+
+    @And("I print all integer array")
+    public void iPrintAllIntegerArray() {
+        int[] array = {9, 8, 7, 6, 5, 4, 3, 2, 1};
+        for (int i = 0; i < array.length; i++) {
+            System.out.print(array[i] + ", ");
+        }
+    }
+
+    @And("I print all even numbers from integer array")
+    public void iPrintAllEvenNumbersFromIntegerArray() {
+        int[] array = {9, 8, 7, 6, 5, 4, 3, 2, 1};
+        for (int i = 0; i < array.length; i++) {
+            if (array[i] % 2 == 0) {
+                System.out.print(array[i] + ", ");
+            }
+        }
+    }
+
+    @And("I check if array contains another element")
+    public void iCheckIfArrayContainsAnotherElement() {
+        int[] array = {9, 8, 7, 6, 5, 4, 3, 2, 1};
+        int num = 8;
+        for (int i : array) {
+            if (i == num) {
+                System.out.println("array contains " + num);
+            }
+        }
+    }
+
+
+
+    @And("I check if array is empty")
+    public void iCheckIfArrayIsEmpty() {
+        int[] array={2};
+        if (array.length==0){
+            System.out.println("array is empty");
+        }
+    }
+
+    @And("I print also negative numbers")
+    public void iPrintAlsoNegativeNumbers() {
+        int[] array={1, 5, 3, 10, 25, -2, 0, 8};
+        for(int i:array){
+            System.out.print(i+", ");
         }
     }
 }
