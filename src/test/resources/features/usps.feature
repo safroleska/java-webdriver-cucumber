@@ -20,11 +20,11 @@
     Scenario: Verify location
       Given I go to "usps" page
       When I perform "Free Boxes" search
-#      And I set "Mail & Ship" in filters
-#      Then I verify that "6" results found
-#      When I select "Priority Mail | USPS" in results
-#      And I click "Ship Now" button
-#      Then I validate that Sign In is required
+      And I set "Mail & Ship" in filters
+      Then I verify that "7" results found
+      When I select "Priority Mail | USPS" in results
+      And I click "Ship Now" button
+      Then I validate that Sign In is required
 
     @usps4
     Scenario: Quadcopters delivery
@@ -39,5 +39,19 @@
       When I navigate to Find a Location page
       And I filter by "Post Offices" location types, "Pickup Services" services, "Accountable Mail" available services
       And I provide data as "4970 El Camino Real 110" street, "Los Altos" city, "CA" state
-#      Then I verify phone number is "800-275-8777"
+      Then I verify phone number is "800-275-8777"
+
+    @usps6
+    Scenario: Every door direct mail
+      Given I go to "usps" page
+      When I go to "Every Door Direct Mail" under "Business"
+      And I search for "4970 El Camino Real, Los Altos, CA 94022"
+      And I wait for 5 sec
+      And I click "Show Table" on the map
+      And I wait for 3 sec
+      When I click "Select All" on the table
+#      And I close modal window
+#      Then I verify that summary of all rows of Cost column is equal Approximate Cost in Order Summary
+
+
 

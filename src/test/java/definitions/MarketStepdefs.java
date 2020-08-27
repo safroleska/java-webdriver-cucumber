@@ -35,7 +35,11 @@ public class MarketStepdefs {
             getDriver().get("https://www.yahoo.com/");
         }else if (page.equalsIgnoreCase("usps")){
             getDriver().get("https://www.usps.com/");
-        } else {
+        } else if (page.equalsIgnoreCase("converter")) {
+            getDriver().get("https://www.unitconverters.net/");
+        } else if (page.equalsIgnoreCase("calculator")) {
+            getDriver().get("http://www.calculator.net/");
+        }else {
             throw new RuntimeException("Unsupported page! "+page);
         }
 
@@ -155,5 +159,48 @@ public class MarketStepdefs {
         }
 
         System.out.println("Logs end>>>>");
+    }
+
+    @When("I {string} third party agreement")
+    public void iThirdPartyAgreement(String action) {
+        getDriver().findElement(By.xpath("//button[@id='thirdPartyButton']")).click();
+        if (action.equals("accept")){
+            getDriver().switchTo().alert().accept();
+        }else if (action.equals("dismiss")){
+            getDriver().switchTo().alert().dismiss();
+        }else{
+            throw new RuntimeException("incorrect action");
+        }
+    }
+    @And("I fill out {string} name and {string} phone contact")
+    public void iFillOutNameAndPhoneContact(String name, String phone) {
+
+        // switch to iframe
+        getDriver().switchTo().frame("additionalInfo");
+
+        getDriver().findElement(By.xpath("//input[@id='contactPersonName']")).sendKeys(name);
+        getDriver().findElement(By.xpath("//input[@id='contactPersonPhone']")).sendKeys(phone);
+
+        // switch back to the parent page
+        getDriver().switchTo().defaultContent();
+    }
+
+    @And("I verify document list contains {string}")
+    public void iVerifyDocumentList(String expectedDoc) {
+
+        String originalWindow = getDriver().getWindowHandle();
+
+        getDriver().findElement(By.xpath("//button[contains(@onclick, 'new')]")).click();
+
+        // switch to a new window
+        for (String handle : getDriver().getWindowHandles()) {
+            getDriver().switchTo().window(handle);
+        }
+
+        String allDocText = getDriver().findElement(By.xpath("//body")).getText();
+        assertThat(allDocText).contains(expectedDoc);
+
+        // switch back to original window
+        getDriver().switchTo().window(originalWindow);
     }
 }

@@ -36,4 +36,15 @@
       And I submit the form
       Then I verify that fields values recorded correctly
 
+    @market6
+    Scenario: Alert, iFrame and Window
+      Given I go to "quote" page
+      When I "accept" third party agreement
+      And I wait for 1 sec
+      And I fill out "Richard Roe" name and "0123456789" phone contact
+      And I wait for 1 sec
+      And I verify document list contains "Document 2"
+      And I fill out required fields
+
+
 

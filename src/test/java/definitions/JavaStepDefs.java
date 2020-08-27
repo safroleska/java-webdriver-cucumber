@@ -313,4 +313,26 @@ public class JavaStepDefs {
             System.out.print(i+", ");
         }
     }
+
+    @And("I write lambda")
+    public void iWriteLambda() {
+        List<Integer> intList= Arrays.asList(3,8,11,2,1);
+        System.out.println(intList);
+    }
+
+    @And("I print all the numbers up to the argument")
+    public void iPrintAllTheNumbersUpToTheArgument() {
+        int[] arr={1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,};
+        for (int i=0; i<arr.length;i++){
+            if (arr[i]%3==0 && arr[i]%5==0){
+                System.out.print("FizzBuzz, ");
+            }else if (arr[i]%3==0){
+                System.out.print("Fizz, ");
+            }else if (arr[i]%5==0){
+                System.out.print("Buzz, ");
+            }else{
+                System.out.print(arr[i]+", ");
+            }
+        }
+    }
 }

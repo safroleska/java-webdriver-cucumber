@@ -12,6 +12,8 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static support.TestContext.getDriver;
 
@@ -54,9 +56,13 @@ public class UspsStepdefs {
         //explicit wait
         WebDriverWait wait= new WebDriverWait(getDriver(),5);
         WebElement result = getDriver().findElement(By.xpath("//*[@id='zipByAddressDiv']"));
-        wait.until(ExpectedConditions.textToBePresentInElement(result, zip));
+//        wait.until(ExpectedConditions.textToBePresentInElement(result, zip));
+        //same as:
+        wait.until(driver ->result.getText().contains(zip));
+//        wait.until(driver->!result.getText().isEmpty()); //the same
+//        wait.until(driver->result.getText().length()>0); //the same
 
-//        assertThat(getDriver().findElement(By.xpath("//*[@id='zipByAddressDiv']")).getText()).contains(zip);
+//        assertThat(result.getText()).contains(zip);
     }
 
     @When("I go to Calculate Price Page")
@@ -89,15 +95,30 @@ public class UspsStepdefs {
 
     @When("I perform {string} search")
     public void iPerformSearch(String name) {
-        WebElement quickTools = getDriver().findElement(By.xpath("//a[@class='nav-first-element menuitem']"));
-        WebElement freeBoxes = getDriver().findElement(By.xpath("//p[contains(text(),'"+name+"')]"));
-        new Actions(getDriver()).moveToElement(quickTools)
+        WebElement search = getDriver().findElement(By.xpath("//a[contains(text(),'Search USPS.com')]"));
+        WebElement freeBoxes = getDriver().findElement(By.xpath("//div[@class='repos']//a[text()='FREE BOXES']"));
+        new Actions(getDriver()).moveToElement(search)
                 .click(freeBoxes)
                 .perform();
     }
 
     @And("I set {string} in filters")
-    public void iSetInFilters(String filter) {
+    public void iSetInFilters(String filter) throws InterruptedException {
+        Thread.sleep(2000);
+        getDriver().findElement(By.xpath("//a[@class='dn-attr-a'][contains(text(),'"+filter+"')]")).click();
+    }
+
+    @Then("I verify that {string} results found")
+    public void iVerifyThatResultsFound(String expectedCount) throws InterruptedException {
+        Thread.sleep(2000);
+//        WebDriverWait wait = new WebDriverWait(getDriver(),5);
+//        wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//ul[@id='records']")));
+        int expectedSize = Integer.parseInt(expectedCount);
+        List<WebElement> result = getDriver().findElements(By.xpath("//ul[@id='records']//li"));
+        int actualResult = result.size();
+
+        assertThat(actualResult).isEqualTo(expectedSize);
+
     }
 
     @When("I go to {string} tab")
@@ -164,12 +185,85 @@ public class UspsStepdefs {
         getDriver().findElement(By.xpath("//a[@id='searchLocations']")).click();
 
 
-
     }
 
     @Then("I verify phone number is {string}")
     public void iVerifyPhoneNumberIs(String phone) {
+        new WebDriverWait(getDriver(),5)
+                .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[@id='resultBox']")));
+        getDriver().findElement(By.xpath("//div[@id='1440608']//span[@class='listArrow']")).click();
+        String result= getDriver().findElement(By.xpath("//p[@class='ask-usps']")).getText();
+        assertThat(result).contains(phone);
 
+//        WebElement resultBox = getDriver().findElement(By.xpath("//div[@id='resultBox']"));
+//        WebDriverWait wait = new WebDriverWait(getDriver(), 5);
+//        wait.until(driver->!resultBox.getText().isEmpty());
+//        resultBox.findElement(By.xpath("//span[@class='listArrow']")).click();
+//        String resultPhoneNumber = getDriver().findElement(By.xpath("//p[@class='ask-usps']")).getText();
+//        resultPhoneNumber = resultPhoneNumber.substring(resultPhoneNumber.indexOf("(")+1,resultPhoneNumber.indexOf(")"));
+//        assertThat(resultPhoneNumber).isEqualTo(phone);
+//        System.out.println("Actual phone number: " + resultPhoneNumber);
+//        System.out.println("Expected phone number: " + phone);
+
+    }
+
+
+
+    @When("I select {string} in results")
+    public void iSelectInResults(String priorityMail) throws InterruptedException {
+        Thread.sleep(2000);
+//        new WebDriverWait(getDriver(),5)
+//                .until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@id='main_res']")));
+        getDriver().findElement(By.xpath("//span[contains(text(),'"+priorityMail+"')]")).click();
+    }
+
+    @And("I click {string} button")
+    public void iClickButton(String button) {
+        getDriver().findElement(By.xpath("//a[@class='button--primary']")).click();
+    }
+
+    @Then("I validate that Sign In is required")
+    public void iValidateThatSignInIsRequired() {
+
+    }
+
+    @When("I go to {string} under {string}")
+    public void iGoToUnder(String link, String menu) {
+        new Actions(getDriver()).moveToElement(getDriver().findElement(By.xpath("//a[@class='menuitem'][text()='Business']")))
+                .click(getDriver().findElement(By.xpath("//a[text()='Every Door Direct Mail']")))
+                .perform();
+    }
+
+    @And("I search for {string}")
+    public void iSearchFor(String address) {
+        getDriver().findElement(By.xpath("//input[@id='address']")).sendKeys(address);
+        getDriver().findElement(By.xpath("//button[@type='submit']//span[@class='icon']")).click();
+
+    }
+
+    @And("I click {string} on the map")
+    public void iClickOnTheMap(String arg0) throws InterruptedException {
+//        Thread.sleep(5000);
+        WebDriverWait wait = new WebDriverWait(getDriver(),10);
+        wait.until(driver ->!getDriver().findElement(By.xpath("//*[@id='eddm_overlay-progress'] ")).isDisplayed());
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//span[@class='toggle-icon']")));
+        getDriver().findElement(By.xpath("//span[@class='toggle-icon']")).click();
+
+    }
+
+    @When("I click {string} on the table")
+    public void iClickOnTheTable(String selectAll) {
+        getDriver().findElement(By.xpath("//*[@id='grid']//*[contains(text(),'"+selectAll+"')]")).click();
+    }
+
+    @And("I close modal window")
+    public void iCloseModalWindow() {
+        for (String handle : getDriver().getWindowHandles()) {
+            getDriver().switchTo().window(handle);
+        }
+
+        ////div[@id='modal-box-closeModal']
+        getDriver().findElement(By.xpath("div[@id='modal-box-closeModal']")).click();
     }
 }
 

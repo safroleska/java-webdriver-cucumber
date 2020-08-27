@@ -12,6 +12,7 @@
 #      And I print "7" day of week
 #      And I print every 3 rd day of week
 #      And I work with maps
+    And I write lambda
 
 
 
@@ -34,11 +35,11 @@
 
     @java5
     Scenario: Homework #8
-      And I print all numbers from 0 up to n
-      And I print also negative numbers
-      And I print all integer array
-      And I print all even numbers from integer array
-      And I check if array is empty
-      And I check if array contains another element
-#      And I print all the numbers up to the argument
+#      And I print all numbers from 0 up to n
+#      And I print also negative numbers
+#      And I print all integer array
+#      And I print all even numbers from integer array
+#      And I check if array is empty
+#      And I check if array contains another element
+      And I print all the numbers up to the argument
 
