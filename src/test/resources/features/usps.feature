@@ -50,8 +50,10 @@
       And I click "Show Table" on the map
       And I wait for 3 sec
       When I click "Select All" on the table
-#      And I close modal window
+      And I close modal window
 #      Then I verify that summary of all rows of Cost column is equal Approximate Cost in Order Summary
+
+
 
 
 

@@ -5,17 +5,22 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import cucumber.api.java.eo.Se;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.html5.WebStorage;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.interactions.HasTouchScreen;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 
 import java.util.List;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static support.TestContext.getDriver;
+import static support.TestContext.*;
 
 public class UspsStepdefs {
     @When("Go to Lookup ZIP page by address")
@@ -26,7 +31,7 @@ public class UspsStepdefs {
         //mouse over
         WebElement mailAndShip = getDriver().findElement(By.xpath("//a[@id='mail-ship-width']"));
         WebElement lookForZip = getDriver().findElement(By.xpath("//li[@class='tool-zip']//a[contains(@href,'Zip')]"));
-        Actions actions= new Actions(getDriver());
+        Actions actions= getActions();
 
         actions.moveToElement(mailAndShip)
                 .click(lookForZip)
@@ -54,11 +59,11 @@ public class UspsStepdefs {
     public void iValidateZipCodeExistsInTheResult(String zip) throws InterruptedException {
 //        Thread.sleep(2000);
         //explicit wait
-        WebDriverWait wait= new WebDriverWait(getDriver(),5);
+
         WebElement result = getDriver().findElement(By.xpath("//*[@id='zipByAddressDiv']"));
 //        wait.until(ExpectedConditions.textToBePresentInElement(result, zip));
         //same as:
-        wait.until(driver ->result.getText().contains(zip));
+        getWait().until(driver ->result.getText().contains(zip));
 //        wait.until(driver->!result.getText().isEmpty()); //the same
 //        wait.until(driver->result.getText().length()>0); //the same
 
@@ -69,7 +74,7 @@ public class UspsStepdefs {
     public void iGoToCalculatePricePage() {
         WebElement mailAndShip = getDriver().findElement(By.xpath("//a[@id='mail-ship-width']"));
         WebElement calAndPrice = getDriver().findElement(By.xpath("//li[@class='tool-calc']//a[contains(text(),'Calculate a Price')]"));
-        new Actions(getDriver()).moveToElement(mailAndShip)
+        getActions().moveToElement(mailAndShip)
                 .click(calAndPrice).perform();
     }
 
@@ -97,27 +102,41 @@ public class UspsStepdefs {
     public void iPerformSearch(String name) {
         WebElement search = getDriver().findElement(By.xpath("//a[contains(text(),'Search USPS.com')]"));
         WebElement freeBoxes = getDriver().findElement(By.xpath("//div[@class='repos']//a[text()='FREE BOXES']"));
-        new Actions(getDriver()).moveToElement(search)
+        getActions().moveToElement(search)
                 .click(freeBoxes)
                 .perform();
     }
 
     @And("I set {string} in filters")
-    public void iSetInFilters(String filter) throws InterruptedException {
-        Thread.sleep(2000);
-        getDriver().findElement(By.xpath("//a[@class='dn-attr-a'][contains(text(),'"+filter+"')]")).click();
+    public void iSetInFilters(String filter)  {
+        WebElement spinner = getDriver().findElement(By.xpath("//div[@class='white-spinner-container']"));
+//        wait.until(ExpectedConditions.invisibilityOf(spinner));
+        WebElement filterElement = getDriver().findElement(By.xpath("//a[@class='dn-attr-a'][contains(text(),'"+filter+"')]"));
+
+
+        getExecutor().executeScript("arguments[0].click()",filterElement);
+
+//        getDriver().findElement(By.xpath("//a[@class='dn-attr-a'][contains(text(),'"+filter+"')]")).click();
+        getWait().until(ExpectedConditions.invisibilityOf(spinner));
     }
 
     @Then("I verify that {string} results found")
     public void iVerifyThatResultsFound(String expectedCount) throws InterruptedException {
-        Thread.sleep(2000);
-//        WebDriverWait wait = new WebDriverWait(getDriver(),5);
-//        wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//ul[@id='records']")));
+//        Thread.sleep(2000);
+//
+//        getWait().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//ul[@id='records']")));
         int expectedSize = Integer.parseInt(expectedCount);
+
+        String heading = getDriver().findElement(By.xpath("//*[@id='searchResultsHeading']")).getText();
+
+        //removing everything except the number
+        String headingCount = heading.replaceAll("\\D*","");
+        int parsedHeadingCount = Integer.parseInt(headingCount);
         List<WebElement> result = getDriver().findElements(By.xpath("//ul[@id='records']//li"));
         int actualResult = result.size();
 
         assertThat(actualResult).isEqualTo(expectedSize);
+        assertThat(actualResult).isEqualTo(parsedHeadingCount);
 
     }
 
@@ -129,15 +148,13 @@ public class UspsStepdefs {
     @And("I perform {string} help search")
     public void iPerformHelpSearch(String text) {
         getDriver().findElement(By.xpath("//*[@placeholder='Search for a topic']")).sendKeys(text);
-        WebDriverWait wait= new WebDriverWait(getDriver(),2);
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(@class,'search-button')]")));
+        getWait().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(@class,'search-button')]")));
         getDriver().findElement(By.xpath("//*[contains(@class,'search-button')]")).click();
     }
 
     @Then("I verify that no results of {string} available in help search")
     public void iVerifyThatNoResultsOfAvailableInHelpSearch(String text) {
-        WebDriverWait wait= new WebDriverWait(getDriver(),5);
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[@class='resultsWrapper']")));
+        getWait().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[@class='resultsWrapper']")));
         assertThat(getDriver().findElement(By.xpath("//div[@class='resultsWrapper']")).getText()).doesNotContain(text);
     }
 
@@ -145,7 +162,7 @@ public class UspsStepdefs {
     public void iNavigateToFindALocationPage() {
         WebElement quickTools = getDriver().findElement(By.xpath("//a[@class='nav-first-element menuitem']"));
         WebElement findLocation = getDriver().findElement(By.xpath("//p[contains(text(),'Find USPS Locations')]"));
-        new Actions(getDriver()).moveToElement(quickTools)
+        getActions().moveToElement(quickTools)
                 .click(findLocation)
                 .perform();
     }
@@ -154,9 +171,9 @@ public class UspsStepdefs {
     public void iFilterByLocationTypesServicesAvailableServices(String location, String services, String availServ)  {
         getDriver().findElement(By.xpath("//button[@id='post-offices-select']")).click();
         getDriver().findElement(By.xpath("//*[@id='post-offices-select']/..//*[text()='"+location+"'][@data-value='po'] ")).click();
-        new Actions(getDriver()).click(getDriver().findElement(By.xpath("//button[@id='service-type-select']")))
+        getActions().click(getDriver().findElement(By.xpath("//button[@id='service-type-select']")))
                 .click(getDriver().findElement(By.xpath("//li[@id='pickupPo']"))).perform();
-        new Actions(getDriver()).click(getDriver().findElement(By.xpath("//button[@id='available-service-select']")))
+        getActions().click(getDriver().findElement(By.xpath("//button[@id='available-service-select']")))
                 .click(getDriver().findElement(By.xpath("//a[contains(text(),'"+availServ+"')]"))).perform();
 
 //        new Select(getDriver().findElement(By.xpath("//*[@id='post-offices-select']")))
@@ -164,8 +181,7 @@ public class UspsStepdefs {
 //        new Select(getDriver().findElement(By.xpath("//*[@id='service-type-select']")))
 //                .selectByVisibleText(services);
 //        Thread.sleep(2000);
-////        new WebDriverWait(getDriver(),5)
-////                .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@id='available-service-select']")));
+////                getWait().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@id='available-service-select']")));
 //        new Select(getDriver().findElement(By.xpath("//*[@id='available-service-select']")))
 //                .selectByVisibleText(availServ);
 //        getDriver().findElement(By.xpath("//a[@id='searchLocations']")).click();
@@ -176,8 +192,8 @@ public class UspsStepdefs {
     public void iProvideDataAsStreetCityState(String street, String city, String state) throws InterruptedException {
         getDriver().findElement(By.xpath("//input[@id='search-input']")).click();
         Thread.sleep(1000);
-//        new WebDriverWait(getDriver(),5)
-//                .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input[@id='addressLineOne']")));
+
+//                getWait().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input[@id='addressLineOne']")));
         getDriver().findElement(By.xpath("//input[@id='addressLineOne']")).sendKeys(street);
         getDriver().findElement(By.xpath("//input[@id='cityOrZipCode']")).sendKeys(city);
         new Select(getDriver().findElement(By.xpath("//select[@id='servicesStateSelect']"))).selectByValue(state);
@@ -189,15 +205,15 @@ public class UspsStepdefs {
 
     @Then("I verify phone number is {string}")
     public void iVerifyPhoneNumberIs(String phone) {
-        new WebDriverWait(getDriver(),5)
-                .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[@id='resultBox']")));
+
+        getWait().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[@id='resultBox']")));
         getDriver().findElement(By.xpath("//div[@id='1440608']//span[@class='listArrow']")).click();
         String result= getDriver().findElement(By.xpath("//p[@class='ask-usps']")).getText();
         assertThat(result).contains(phone);
 
 //        WebElement resultBox = getDriver().findElement(By.xpath("//div[@id='resultBox']"));
-//        WebDriverWait wait = new WebDriverWait(getDriver(), 5);
-//        wait.until(driver->!resultBox.getText().isEmpty());
+//
+//        getWait().until(driver->!resultBox.getText().isEmpty());
 //        resultBox.findElement(By.xpath("//span[@class='listArrow']")).click();
 //        String resultPhoneNumber = getDriver().findElement(By.xpath("//p[@class='ask-usps']")).getText();
 //        resultPhoneNumber = resultPhoneNumber.substring(resultPhoneNumber.indexOf("(")+1,resultPhoneNumber.indexOf(")"));
@@ -210,26 +226,57 @@ public class UspsStepdefs {
 
 
     @When("I select {string} in results")
-    public void iSelectInResults(String priorityMail) throws InterruptedException {
-        Thread.sleep(2000);
-//        new WebDriverWait(getDriver(),5)
-//                .until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@id='main_res']")));
+    public void iSelectInResults(String priorityMail) {
         getDriver().findElement(By.xpath("//span[contains(text(),'"+priorityMail+"')]")).click();
     }
 
     @And("I click {string} button")
-    public void iClickButton(String button) {
-        getDriver().findElement(By.xpath("//a[@class='button--primary']")).click();
-    }
+    public void iClickButton(String buttonTitle) throws InterruptedException {
+            int numOfWin = getDriver().getWindowHandles().size();
+
+
+
+        //until less then initial numOfWin+1 click on that button
+            while (getDriver().getWindowHandles().size() < numOfWin + 1) {
+                getDriver().findElement(By.xpath("//a[contains(text(),'" + buttonTitle + "')]")).click();
+                Thread.sleep(100);
+            }
+        }
+//        getDriver().findElement(By.xpath("//a[@class='button--primary']")).click();
+
 
     @Then("I validate that Sign In is required")
     public void iValidateThatSignInIsRequired() {
+        String originalWindow = getDriver().getWindowHandle();
+        // switch to new window
+        for (String handle : getDriver().getWindowHandles()) {
+            getDriver().switchTo().window(handle);
+        }
+
+        getWait(10).until(ExpectedConditions.titleContains("Sign In"));
+
+        getDriver().findElement(By.xpath("//button[@id='btn-submit']")).click();
+        getWait().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[@id='error-username']")));
+        getWait().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[@id='error-password']")));
+
+        // switch back
+        getDriver().switchTo().window(originalWindow);
+//        String originalWindow = getDriver().getWindowHandle();
+//        //switch to the new window
+//        for (String handle: getDriver().getWindowHandles()){
+//            getDriver().switchTo().window(handle);
+//        }
+//        getWait().until(ExpectedConditions.titleContains("Sign in"));
+//        WebElement username= getDriver().findElement(By.xpath("//*[id='username']"));
+//        assertThat(username.isDisplayed()).isTrue();
+//        //switch back
+//        getDriver().switchTo().window(originalWindow);
 
     }
 
     @When("I go to {string} under {string}")
     public void iGoToUnder(String link, String menu) {
-        new Actions(getDriver()).moveToElement(getDriver().findElement(By.xpath("//a[@class='menuitem'][text()='Business']")))
+        getActions().moveToElement(getDriver().findElement(By.xpath("//a[@class='menuitem'][text()='Business']")))
                 .click(getDriver().findElement(By.xpath("//a[text()='Every Door Direct Mail']")))
                 .perform();
     }
@@ -244,9 +291,8 @@ public class UspsStepdefs {
     @And("I click {string} on the map")
     public void iClickOnTheMap(String arg0) throws InterruptedException {
 //        Thread.sleep(5000);
-        WebDriverWait wait = new WebDriverWait(getDriver(),10);
-        wait.until(driver ->!getDriver().findElement(By.xpath("//*[@id='eddm_overlay-progress'] ")).isDisplayed());
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//span[@class='toggle-icon']")));
+        getWait().until(driver ->!getDriver().findElement(By.xpath("//*[@id='eddm_overlay-progress'] ")).isDisplayed());
+        getWait().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//span[@class='toggle-icon']")));
         getDriver().findElement(By.xpath("//span[@class='toggle-icon']")).click();
 
     }
@@ -258,13 +304,19 @@ public class UspsStepdefs {
 
     @And("I close modal window")
     public void iCloseModalWindow() {
+//        WebElement modal = getDriver().findElement(By.xpath("//div[@id='modal-box']"));
+//        getDriver().switchTo().alert().dismiss();
+        String originalWindow = getDriver().getWindowHandle();
         for (String handle : getDriver().getWindowHandles()) {
             getDriver().switchTo().window(handle);
         }
-
-        ////div[@id='modal-box-closeModal']
-        getDriver().findElement(By.xpath("div[@id='modal-box-closeModal']")).click();
+//
+//        ////div[@id='modal-box-closeModal']
+        getDriver().findElement(By.xpath("//button[@id='dropOffDone']")).click();
+        getDriver().switchTo().window(originalWindow);
     }
+
+
 }
 
 

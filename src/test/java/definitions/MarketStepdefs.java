@@ -10,6 +10,8 @@ import org.openqa.selenium.logging.LogEntry;
 import org.openqa.selenium.logging.LogType;
 
 
+import java.util.Map;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static support.TestContext.*;
 
@@ -39,6 +41,8 @@ public class MarketStepdefs {
             getDriver().get("https://www.unitconverters.net/");
         } else if (page.equalsIgnoreCase("calculator")) {
             getDriver().get("http://www.calculator.net/");
+        } else if (page.equalsIgnoreCase("ups")) {
+            getDriver().get("https://www.ups.com/us/en/Home.page");
         }else {
             throw new RuntimeException("Unsupported page! "+page);
         }
@@ -60,16 +64,18 @@ public class MarketStepdefs {
         getDriver().navigate().refresh();
     }
 
-    @When("I fill out required fields")
-    public void iFillOutRequiredFields() {
+    @When("I fill out required fields for {string}")
+    public void iFillOutRequiredFields(String role) {
+        Map<String,String> user = getData(role);
+
         getDriver().findElement(By.xpath("//*[@id='name']")).click();
-        getDriver().findElement(By.xpath("//*[@id='firstName']")).sendKeys("Chandler");
-        getDriver().findElement(By.xpath("//*[@id='lastName']")).sendKeys("Bing");
+        getDriver().findElement(By.xpath("//*[@id='firstName']")).sendKeys(user.get("firstName"));
+        getDriver().findElement(By.xpath("//*[@id='lastName']")).sendKeys(user.get("lastName"));
         getDriver().findElement(By.xpath("//span[contains(text(),'Save')]")).click();
-        getDriver().findElement(By.xpath("//input[@name='username']")).sendKeys("test");
-        getDriver().findElement(By.xpath("//input[@name='email']")).sendKeys("test@mail.com");
-        getDriver().findElement(By.xpath("//input[@id='password']")).sendKeys("12345");
-        getDriver().findElement(By.xpath("//input[@id='confirmPassword']")).sendKeys("12345");
+        getDriver().findElement(By.xpath("//input[@name='username']")).sendKeys(user.get("username"));
+        getDriver().findElement(By.xpath("//input[@name='email']")).sendKeys(user.get("email"));
+        getDriver().findElement(By.xpath("//input[@id='password']")).sendKeys(user.get("password"));
+        getDriver().findElement(By.xpath("//input[@id='confirmPassword']")).sendKeys(user.get("password"));
         getDriver().findElement(By.xpath("//*[@name='agreedToPrivacyPolicy']")).click();
 
     }
@@ -79,14 +85,28 @@ public class MarketStepdefs {
         getDriver().findElement(By.xpath("//*[@id='formSubmit']")).click();
     }
 
-    @Then("I verify required fields")
-    public void iVerifyRequiredFields() {
-        String name = getDriver().findElement(By.xpath("//b[@name='name']")).getText();
-        String userName = getDriver().findElement(By.xpath("//b[@name='username']")).getText();
-        String email = getDriver().findElement(By.xpath("//b[@name='email']")).getText();
-        System.out.println("Name is: "+name);
-        System.out.println("Username is: "+userName);
-        System.out.println("Email is: "+email);
+    @Then("I verify required fields for {string}")
+    public void iVerifyRequiredFields(String role) {
+
+        Map<String, String> user = getData(role);
+        String result = getDriver().findElement(By.xpath("//div[@id='quotePageResult']")).getText();
+        System.out.println(result);
+
+        assertThat(result).containsIgnoringCase(user.get("username"));
+        assertThat(result).containsIgnoringCase(user.get("email"));
+        assertThat(result).doesNotContain(user.get("password"));
+        assertThat(result).contains(user.get("firstName") + " " + user.get("lastName"));
+
+        String privacyPolicy = getDriver().findElement(By.xpath("//b[@name='agreedToPrivacyPolicy']")).getText();
+        assertThat(privacyPolicy).isEqualTo("true");
+
+
+//        String name = getDriver().findElement(By.xpath("//b[@name='name']")).getText();
+//        String userName = getDriver().findElement(By.xpath("//b[@name='username']")).getText();
+//        String email = getDriver().findElement(By.xpath("//b[@name='email']")).getText();
+//        System.out.println("Name is: "+name);
+//        System.out.println("Username is: "+userName);
+//        System.out.println("Email is: "+email);
     }
 
     @And("I verify email field behavior")
@@ -135,6 +155,7 @@ public class MarketStepdefs {
 //        assertThat(result).containsIgnoringCase("test");
 //        assertThat(result).containsIgnoringCase("test@mail.com");
 //        assertThat(result).doesNotContain("12345");
+
 
 
 

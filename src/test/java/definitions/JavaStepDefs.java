@@ -194,13 +194,45 @@ public class JavaStepDefs {
 
     @Given("I solve coding challenges")
     public void iSolveCodingChallenges() {
-        System.out.println("I solve coding challenges");
-        //swap
-        swap(5, 3);
-        Map<String, String> info = new LinkedHashMap<>();
-        info.put("firstName", "George");
-        info.put("middleName", "John");
+//        System.out.println("I solve coding challenges");
+//        //swap
+//        swap(5, 3);
+//        Map<String, String> info = new LinkedHashMap<>();
+//        info.put("firstName", "George");
+//        info.put("middleName", "John");
 //        swapMap(Map<>info);
+
+//        ReturnNumbers(20);
+
+//        PrintReversed("Olesya");
+        String str = "Olesya";
+        System.out.println(getReversed(str));
+
+    }
+    //return reversed
+    String getReversed(String str){
+        System.out.println("Return reversed "+ str);
+        String reversed="";
+        for (int i= str.length()-1;i>=0;i--){
+            reversed+= str.charAt(i);
+        }
+        return reversed;
+    }
+    //print reversed
+
+    void PrintReversed(String str){
+        System.out.println("Print Reverse "+ str);
+        for (int i=str.length()-1;i>=0;i--){
+            System.out.print(str.charAt(i));
+        }
+    }
+
+
+    void ReturnNumbers (int num){
+        for (int i=0; i<= num; i++){
+            System.out.print(i+ " ");
+        }
+
     }
 
     void swap(int a, int b) {
@@ -334,5 +366,9 @@ public class JavaStepDefs {
                 System.out.print(arr[i]+", ");
             }
         }
+    }
+
+    @And("I print numbers")
+    public void iPrintNumbers() {
     }
 }
