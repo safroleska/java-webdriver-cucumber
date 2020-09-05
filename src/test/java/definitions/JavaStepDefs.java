@@ -3,6 +3,9 @@ package definitions;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.hu.Ha;
+import page.Animal;
+import page.Cat;
+import page.Dog;
 
 import java.sql.SQLOutput;
 import java.util.*;
@@ -205,10 +208,131 @@ public class JavaStepDefs {
 //        ReturnNumbers(20);
 
 //        PrintReversed("Olesya");
-        String str = "Olesya";
-        System.out.println(getReversed(str));
+//        String str = "Olesya";
+//        System.out.println(getReversed(str));
+//        System.out.println(getEveryThird("WebDriver"));
+//        speakLikeYoda("I am Automation Engineer");
+//        System.out.println(isPalindrome1("noon"));
+
+//        int[] unsortedArr= {2, 5, 10, 4, 9};
+//        int num=3;
+//        System.out.println(findSum(unsortedArr,num));
+        System.out.println(factorial(5));
 
     }
+    long factorial(long num){
+        if (num==0){
+            return 1;
+        }
+        return num*factorial(num-1);
+    }
+
+    boolean findSum(int[] arr, int num){
+        for (int i=0; i<arr.length;i++){
+            for(int j=i+1; j<arr.length;j++){
+                if( arr[i]+arr[j]==num){
+                    return true;
+                }
+            }
+        }
+        return false;
+
+    }
+//    Write a function that find 2 max numbers in an array
+//    Write a function that finds if array contains duplicates
+//    Write a function that counts number of each character in a string
+//    Write a	function to	find the largest element in an array and test it
+//    Write a	function that reverses	string	without	extra string variable
+//    Write a	function that performs a binary	search
+//    void twoMaxNumbers(int[] array){
+//
+//        for (int i=0; i<array.length; i++){
+//            int max1=array[0];
+//            if (array[i]>max1){
+//                max1=array[i];
+//            }
+//            for(int j=0; j<array.length;j++){
+//                int max2=array[0];
+//                if (array[j]>max2 && array[j]!=max1){
+//                    max2=array[j];
+//                }
+//            }
+//            System.out.print(max1);
+//        }
+//
+//    }
+    boolean isPalindrome1(String word){
+        int j=0;
+        for (int i=word.length()-1;i>=word.length()/2; i--){
+
+            if (word.charAt(i)!=word.charAt(j)){
+                return false;
+            }
+            j++;
+        }
+        return true;
+    }
+
+    boolean isPalindrome(String word){
+        String str="";
+        for (int i=word.length()-1;i>=0;i--){
+
+            str+=word.charAt(i);
+        }
+        return str.equals(word);
+
+    }
+    int[] sort(int[] arr) {
+        for (int i = 0; i < arr.length; i++) {
+            for (int j = i + 1; j < arr.length; j++) {
+                if (arr[i] > arr[j]) {
+                    int temp = arr[i];
+                    arr[i] = arr[j];
+                    arr[j] = temp;
+                }
+            }
+        }
+        return arr;
+    }
+    //generic function that i can use when we don't know the type of array
+    boolean ifContainsElement(Object[] arr,Object num){
+        System.out.println("ifContaining() method: ");
+        for (int i=0; i<arr.length;i++){
+            if (arr[i].equals(num)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    boolean ifContainsElement(int[] arr,int num){
+        System.out.println("ifContaining() method: ");
+        for (int i=0; i<arr.length;i++){
+            if (arr[i]==num){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    void speakLikeYoda(String text){
+        String[] arrayText= text.split(" ");
+        for (int i=arrayText.length-1;i>=0;i--){
+            System.out.print(arrayText[i]+" ");
+            }
+        }
+
+    String getEveryThird(String str){
+        System.out.println("Reverse every third character: "+str);
+        String everyThird= "";
+        for (int i=str.length()-1; i>=0;i--){
+            if (i%3==0){
+               everyThird+=str.charAt(i);
+            }
+        }
+        return everyThird;
+    }
+
     //return reversed
     String getReversed(String str){
         System.out.println("Return reversed "+ str);
@@ -326,6 +450,7 @@ public class JavaStepDefs {
                 System.out.println("array contains " + num);
             }
         }
+
     }
 
 
@@ -370,5 +495,37 @@ public class JavaStepDefs {
 
     @And("I print numbers")
     public void iPrintNumbers() {
+    }
+
+    @Given("I work with classes")
+    public void iWorkWithClasses() {
+        //cat
+        //dog
+        Cat cat= new Cat("Tom");
+        System.out.println(cat.getName());
+        cat.eat("fish");
+        cat.sleep();
+        cat.walk();
+        cat.speak();
+
+        Dog dog= new Dog();
+        System.out.println(dog.getName());
+        dog.eat("fish");
+        dog.sleep();
+        dog.walk();
+        dog.speak();
+
+        List<Animal> list = new ArrayList<>();
+        list.add(cat);
+        list.add(dog);
+        printAnimalNames(list);
+    }
+
+    public void printAnimalNames(List<Animal> animals) {
+        System.out.println("print names method");
+        for (Animal animal : animals) {
+            animal.speak();
+            System.out.println(animal.getName());
+        }
     }
 }

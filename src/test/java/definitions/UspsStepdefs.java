@@ -4,6 +4,7 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import cucumber.api.java.eo.Se;
+import org.assertj.core.data.Percentage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -16,7 +17,10 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -298,25 +302,52 @@ public class UspsStepdefs {
     }
 
     @When("I click {string} on the table")
-    public void iClickOnTheTable(String selectAll) {
-        getDriver().findElement(By.xpath("//*[@id='grid']//*[contains(text(),'"+selectAll+"')]")).click();
+    public void iClickOnTheTable(String text) {
+        getDriver().findElement(By.xpath("//*[@id='route-table']//*[contains(text(),'"+text+"')]")).click();
     }
 
     @And("I close modal window")
     public void iCloseModalWindow() {
-//        WebElement modal = getDriver().findElement(By.xpath("//div[@id='modal-box']"));
-//        getDriver().switchTo().alert().dismiss();
-        String originalWindow = getDriver().getWindowHandle();
-        for (String handle : getDriver().getWindowHandles()) {
-            getDriver().switchTo().window(handle);
-        }
-//
-//        ////div[@id='modal-box-closeModal']
-        getDriver().findElement(By.xpath("//button[@id='dropOffDone']")).click();
-        getDriver().switchTo().window(originalWindow);
+        getDriver().findElement(By.xpath("//div[@id='modal-box-closeModal']")).click();
     }
 
 
+    @Then("I verify that summary of all rows of Cost column is equal Approximate Cost in Order Summary")
+    public void iVerifyThatSummaryOfAllRowsOfCostColumnIsEqualApproximateCostInOrderSummary() throws ParseException {
+
+            String totalCountString = getDriver().findElement(By.xpath("//a[contains(@class, 'totalsArea')]")).getText();
+            int totalCount = Integer.parseInt(totalCountString.replaceAll("\\D*", ""));
+
+            By costListSelector = By.xpath("//td[@idx='7']");
+            List<WebElement> costList = getDriver().findElements(costListSelector);
+            System.out.println("Expected elements size: " + totalCount);
+
+            // dealing with infinite scroll
+            while (costList.size() < totalCount) {
+                System.out.println("Actual elements size: " + costList.size());
+                int lastIndex = costList.size() - 1;
+                getActions().moveToElement(costList.get(lastIndex)).perform();
+                costList = getDriver().findElements(costListSelector);
+            }
+            System.out.println("Actual elements size: " + costList.size());
+
+            Locale locale = new Locale("en", "US");
+            NumberFormat formatter = NumberFormat.getCurrencyInstance(locale);
+            double actualTotal = 0;
+            for (WebElement cost : costList) {
+                double costTotal = formatter.parse(cost.getText()).doubleValue();
+                actualTotal += costTotal;
+            }
+            System.out.println("Actual total " + actualTotal);
+
+            String expectedTotalString = getDriver().findElement(By.xpath("//span[@class='approx-cost']")).getText();
+            double expectedTotal = Double.parseDouble(expectedTotalString);
+            System.out.println("Expected total " + expectedTotal);
+
+            assertThat(actualTotal).isCloseTo(expectedTotal, Percentage.withPercentage(1));
+
+
+    }
 }
 
 

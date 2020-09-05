@@ -6,7 +6,7 @@
 #      Given I say hello world
 #      And I say "and again hello"
 #      And I perform actions with "var1" and "VAR1"
-#      And I work with arrays
+      And I work with arrays
 #      And I print 7 th day of week
 #      And I print if number 35 is positive
 #      And I print "7" day of week
@@ -43,4 +43,9 @@
       And I check if array is empty
       And I check if array contains another element
       And I print all the numbers up to the argument
+
+    @java6
+    Scenario: Classes
+      Given I work with classes
+
 
