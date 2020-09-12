@@ -14,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static support.TestContext.*;
 
 
-public class HomeworkStepdefs {
+public class HomeworkStepDefs {
     @When("I click on {string}")
     public void iClickOn(String tab) {
         getDriver().findElement(By.xpath("//div[@id='menu']//a[contains(text(),'"+tab+"')]")).click();

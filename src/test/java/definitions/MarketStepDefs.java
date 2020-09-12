@@ -15,7 +15,7 @@ import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
 import static support.TestContext.*;
 
-public class MarketStepdefs {
+public class MarketStepDefs {
     @Given("I go to {string} page")
     public void iGoToPage(String page) throws InterruptedException {
 //        switch (page){

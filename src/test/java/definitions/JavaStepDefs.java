@@ -3,9 +3,7 @@ package definitions;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.hu.Ha;
-import page.Animal;
-import page.Cat;
-import page.Dog;
+import page.*;
 
 import java.sql.SQLOutput;
 import java.util.*;
@@ -217,9 +215,35 @@ public class JavaStepDefs {
 //        int[] unsortedArr= {2, 5, 10, 4, 9};
 //        int num=3;
 //        System.out.println(findSum(unsortedArr,num));
-        System.out.println(factorial(5));
+//        System.out.println(factorial(5));
+//        swapTwoNumInArr(1,3,new int[] {1,2,3,4,5});
+        int[] arr={4,5,8,2,9,1};
+        sortArr(arr);
 
     }
+    void sortArr(int[] arr){
+        for (int i=0; i<arr.length; i++){
+            for (int j=i+1; j< arr.length-1;j++){
+                if (arr[i]<arr[j]){
+                    int temp = arr[i];
+                    arr[i]=arr[j];
+                    arr[j]=temp;
+                }
+            }
+
+        }
+        System.out.println(Arrays.toString(arr));
+    }
+
+    void swapTwoNumInArr(int a, int b, int[] arr){
+        int temp = arr[a - 1];
+        arr[a - 1] = arr[b - 1];
+        arr[b - 1] = temp;
+        for (int i:arr) {
+            System.out.print(i);
+        }
+    }
+
     long factorial(long num){
         if (num==0){
             return 1;
@@ -515,9 +539,25 @@ public class JavaStepDefs {
         dog.walk();
         dog.speak();
 
+        Fish fish = new Fish();
+        System.out.println(fish.getName());
+        fish.sleep();
+        fish.walk();
+        fish.speak();
+
+        Bird bird = new Bird("Jack");
+        System.out.println(bird.getName());
+        bird.eat("Bugs");
+        bird.speak();
+        bird.walk();
+        bird.sleep();
+
+
         List<Animal> list = new ArrayList<>();
         list.add(cat);
         list.add(dog);
+        list.add(fish);
+        list.add(bird);
         printAnimalNames(list);
     }
 
@@ -525,6 +565,7 @@ public class JavaStepDefs {
         System.out.println("print names method");
         for (Animal animal : animals) {
             animal.speak();
+            animal.walk();
             System.out.println(animal.getName());
         }
     }

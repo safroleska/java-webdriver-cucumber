@@ -47,9 +47,7 @@
       Given I go to "usps" page
       When I go to "Every Door Direct Mail" under "Business"
       And I search for "4970 El Camino Real, Los Altos, CA 94022"
-      And I wait for 5 sec
       And I click "Show Table" on the map
-      And I wait for 3 sec
       When I click "Select All" on the table
       And I close modal window
       Then I verify that summary of all rows of Cost column is equal Approximate Cost in Order Summary
@@ -74,17 +72,17 @@
       When I go to "Stamps" under "Postal Store"
       When I unselect Stamps checkbox
       And select Vertical stamp Shape
-      And I click Blue color
+      And I click "Blue" color
       Then I verify "Blue" and "Vertical" filters
       Then I verify 12 items found
-      And I verify that items below 12 dollars exists
+#      And I verify that items below 12 dollars exists
 
     @usps10
-    Scenario: Verify location
+    Scenario: Verify service
       Given I go to "usps" page
       When I perform "Passports" search
       And I select "Passport Application" in results
-      And I click "Schedule an Appointment" button
+      And I submit "Schedule an Appointment"
       And verify "Passport Renewal" service exists
 
     @usps11
