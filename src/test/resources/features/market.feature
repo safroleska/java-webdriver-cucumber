@@ -15,6 +15,7 @@
       Given I go to "quote" page
       And I print page details
       When I fill out required fields for "user"
+#      Then I verify "name" field value "John Doe"
       And I submit the form
       Then I verify required fields for "user"
 

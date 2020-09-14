@@ -26,8 +26,8 @@ public class QuoteForm extends Quote{
     @FindBy(name = "confirmPassword")
     private WebElement confirmPassword;
 
-    @FindBy(name = "name")
-    private WebElement name;
+    @FindBy(id = "name")
+    public WebElement name;
 
     @FindBy(name = "firstName")
     private WebElement firstName;
@@ -62,17 +62,26 @@ public class QuoteForm extends Quote{
     @FindBy(id = "thirdPartyButton")
     private WebElement thirdPartyButton;
 
+    @FindBy(id = "middleName")
+    public WebElement middleName;
+
+
+    @FindBy (id = "username-error")
+    public WebElement usernameError;
+
+
+
 
 
 
 
     // constructor
 
-    public QuoteForm() {
+//    public QuoteForm() {
 //        PageFactory.initElements(getDriver(), this);
 //        url = "https://skryabin.com/market/quote.html";
 //        title = "Get a Quote";
-    }
+//    }
 
     // methods
 
@@ -133,6 +142,24 @@ public class QuoteForm extends Quote{
         thirdPartyButton.click();
         getDriver().switchTo().alert().accept();
     }
+
+    public void fillCertainField(String fieldName, String value){
+        username.sendKeys(value);
+    }
+
+
+    public String fieldError(){
+
+        String err = usernameError.getText();
+        return err;
+    }
+
+    public String fieldValue(){
+        String value = name.getAttribute("value");
+        return value;
+    }
+
+
 
 
 }

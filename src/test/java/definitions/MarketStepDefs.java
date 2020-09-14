@@ -224,4 +224,9 @@ public class MarketStepDefs {
         // switch back to original window
         getDriver().switchTo().window(originalWindow);
     }
+
+//    @Then("I verify {string} field value {string}")
+//    public void iVerifyFieldValue(String arg0, String arg1) {
+//        assertThat(getDriver().findElement(By.xpath("//input[@id='name']")).getAttribute("value")).isEqualTo(arg1);
+//    }
 }
