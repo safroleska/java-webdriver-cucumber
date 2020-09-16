@@ -81,70 +81,70 @@ public class HomeworkStepDefs {
 
     }
 
-    @And("I open Shipping menu")
-    public void iOpenShippingMenu() {
-        getDriver().findElement(By.xpath("//a[@id='ups-menuLinks2']")).click();
-    }
+//    @And("I open Shipping menu")
+//    public void iOpenShippingMenu() {
+//        getDriver().findElement(By.xpath("//a[@id='ups-menuLinks2']")).click();
+//    }
 
-    @And("I go to Create a Shipment")
-    public void iGoToCreateAShipment() {
-        getDriver().findElement(By.xpath("//a[contains(text(),'Create a Shipment:')]")).click();
-    }
+//    @And("I go to Create a Shipment")
+//    public void iGoToCreateAShipment() {
+//        getDriver().findElement(By.xpath("//a[contains(text(),'Create a Shipment:')]")).click();
+//    }
 
-    @When("I fill out origin shipment fields")
-    public void iFillOutOriginShipmentFields() {
-        getWait().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[@class='ups-app_inner']")));
-        Map<String,String> ups = getData("ups");
-        getDriver().findElement(By.xpath("//input[@id='originname']")).sendKeys(ups.get("name"));
-        getDriver().findElement(By.xpath("//*[@placeholder='Street Address']")).sendKeys(ups.get("address"));
-        getDriver().findElement(By.xpath("//input[@id='originpostal']")).sendKeys(ups.get("zip"));
-        getWait().until(ExpectedConditions.textToBePresentInElementValue(By.xpath("//input[@id='origincity']"),"LOS ALTOS" ));
-        getWait().until(ExpectedConditions.elementToBeSelected(By.xpath("//option[contains(text(),'California')]")));
-        getDriver().findElement(By.xpath("//input[@id='originemail']")).sendKeys(ups.get("email"));
-        getDriver().findElement(By.xpath("//input[@id='originphone']")).sendKeys(ups.get("phone"));
+//    @When("I fill out origin shipment fields")
+//    public void iFillOutOriginShipmentFields() {
+//        getWait().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[@class='ups-app_inner']")));
+//        Map<String,String> ups = getData("ups");
+//        getDriver().findElement(By.xpath("//input[@id='originname']")).sendKeys(ups.get("name"));
+//        getDriver().findElement(By.xpath("//*[@placeholder='Street Address']")).sendKeys(ups.get("address"));
+//        getDriver().findElement(By.xpath("//input[@id='originpostal']")).sendKeys(ups.get("zip"));
+//        getWait().until(ExpectedConditions.textToBePresentInElementValue(By.xpath("//input[@id='origincity']"),"LOS ALTOS" ));
+//        getWait().until(ExpectedConditions.elementToBeSelected(By.xpath("//option[contains(text(),'California')]")));
+//        getDriver().findElement(By.xpath("//input[@id='originemail']")).sendKeys(ups.get("email"));
+//        getDriver().findElement(By.xpath("//input[@id='originphone']")).sendKeys(ups.get("phone"));
+//
+//    }
 
-    }
+//    @And("I submit the shipment form")
+//    public void iSubmitTheShipmentForm() {
+//        getExecutor().executeScript("arguments[0].click()",getDriver().findElement(By.xpath("//button[@id='nbsBackForwardNavigationContinueButton']")));
+//        //button[@id='nbsBackForwardNavigationReviewPrimaryButton']
+//    }
 
-    @And("I submit the shipment form")
-    public void iSubmitTheShipmentForm() {
-        getExecutor().executeScript("arguments[0].click()",getDriver().findElement(By.xpath("//button[@id='nbsBackForwardNavigationContinueButton']")));
-        //button[@id='nbsBackForwardNavigationReviewPrimaryButton']
-    }
+//    @Then("I verify origin shipment fields submitted")
+//    public void iVerifyOriginShipmentFieldsSubmitted() {
+//        String result = getDriver().findElement(By.xpath("//div[@class='ups-group ups-group_condensed']")).getText();
+//        Map<String, String> ups= getData("ups");
+//        assertThat(result).containsIgnoringCase(ups.get("name"));
+//        assertThat(result).containsIgnoringCase(ups.get("address"));
+//        assertThat(result).containsIgnoringCase(ups.get("zip"));
+//        assertThat(result).containsIgnoringCase(ups.get("email"));
+//        assertThat(result).containsIgnoringCase(ups.get("phone"));
+//    }
 
-    @Then("I verify origin shipment fields submitted")
-    public void iVerifyOriginShipmentFieldsSubmitted() {
-        String result = getDriver().findElement(By.xpath("//div[@class='ups-group ups-group_condensed']")).getText();
-        Map<String, String> ups= getData("ups");
-        assertThat(result).containsIgnoringCase(ups.get("name"));
-        assertThat(result).containsIgnoringCase(ups.get("address"));
-        assertThat(result).containsIgnoringCase(ups.get("zip"));
-        assertThat(result).containsIgnoringCase(ups.get("email"));
-        assertThat(result).containsIgnoringCase(ups.get("phone"));
-    }
+//    @And("I cancel the shipment form")
+//    public void iCancelTheShipmentForm() {
+//        String originalWindow = getDriver().getWindowHandle();
+//        getExecutor().executeScript("arguments[0].click()",getDriver().findElement(By.xpath("//button[@id='nbsBackForwardNavigationCancelShipmentButton']")));
+//
+//        for (String handle : getDriver().getWindowHandles()) {
+//            getDriver().switchTo().window(handle);
+//        }
+//        getDriver().findElement(By.xpath("//button[@id='nbsCancelShipmentWarningYes']")).click();
+//
+//        getDriver().switchTo().window(originalWindow);
+//
+//    }
 
-    @And("I cancel the shipment form")
-    public void iCancelTheShipmentForm() {
-        String originalWindow = getDriver().getWindowHandle();
-        getExecutor().executeScript("arguments[0].click()",getDriver().findElement(By.xpath("//button[@id='nbsBackForwardNavigationCancelShipmentButton']")));
-
-        for (String handle : getDriver().getWindowHandles()) {
-            getDriver().switchTo().window(handle);
-        }
-        getDriver().findElement(By.xpath("//button[@id='nbsCancelShipmentWarningYes']")).click();
-
-        getDriver().switchTo().window(originalWindow);
-
-    }
-
-    @Then("I verify shipment form is reset")
-    public void iVerifyShipmentFormIsReset() {
-        Map<String,String> ups = getData("ups");
-        assertThat(getDriver().findElement(By.xpath("//input[@id='originname']")).getText()).doesNotContain(ups.get("name"));
-        assertThat(getDriver().findElement(By.xpath("//*[@placeholder='Street Address']")).getText()).doesNotContain(ups.get("address"));
-        assertThat(getDriver().findElement(By.xpath("//input[@id='originpostal']")).getText()).doesNotContain(ups.get("zip"));
-        assertThat(getDriver().findElement(By.xpath("//input[@id='originemail']")).getText()).doesNotContain(ups.get("email"));
-        assertThat(getDriver().findElement(By.xpath("//input[@id='originphone']")).getText()).doesNotContain(ups.get("phone"));
-    }
+//    @Then("I verify shipment form is reset")
+//    public void iVerifyShipmentFormIsReset() {
+//        Map<String,String> ups = getData("ups");
+//        assertThat(getDriver().findElement(By.xpath("//input[@id='originname']")).getText()).doesNotContain(ups.get("name"));
+//        assertThat(getDriver().findElement(By.xpath("//*[@placeholder='Street Address']")).getText()).doesNotContain(ups.get("address"));
+//        assertThat(getDriver().findElement(By.xpath("//input[@id='originpostal']")).getText()).doesNotContain(ups.get("zip"));
+//        assertThat(getDriver().findElement(By.xpath("//input[@id='originemail']")).getText()).doesNotContain(ups.get("email"));
+//        assertThat(getDriver().findElement(By.xpath("//input[@id='originphone']")).getText()).doesNotContain(ups.get("phone"));
+//    }
 
     @When("I fill out destination shipment fields")
     public void iFillOutDestinationShipmentFields() {

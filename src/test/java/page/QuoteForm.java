@@ -1,6 +1,7 @@
 package page;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -14,25 +15,28 @@ public class QuoteForm extends Quote{
 //    private String url;
 //    private String title;
 
-    @FindBy(name = "username")
+    @FindBy(xpath = "//input[@name='username']")
     private WebElement username;
 
     @FindBy(name = "email")
     private WebElement email;
 
-    @FindBy(name = "password")
+    @FindBy(id = "password")
     private WebElement password;
 
     @FindBy(name = "confirmPassword")
     private WebElement confirmPassword;
 
     @FindBy(id = "name")
-    public WebElement name;
+    private WebElement name;
 
-    @FindBy(name = "firstName")
+    @FindBy(id = "firstName")
     private WebElement firstName;
 
-    @FindBy(name = "lastName")
+    @FindBy(id = "middleName")
+    private WebElement middleName;
+
+    @FindBy(id = "lastName")
     private WebElement lastName;
 
     @FindBy(xpath = "//span[text()='Save']")
@@ -62,12 +66,13 @@ public class QuoteForm extends Quote{
     @FindBy(id = "thirdPartyButton")
     private WebElement thirdPartyButton;
 
-    @FindBy(id = "middleName")
-    public WebElement middleName;
-
-
     @FindBy (id = "username-error")
-    public WebElement usernameError;
+    private WebElement usernameError;
+
+    // dynamic field
+    private WebElement errorElement(String fieldName) {
+        return getDriver().findElement(By.id(fieldName + "-error"));
+    }
 
 
 
@@ -109,6 +114,14 @@ public class QuoteForm extends Quote{
         saveButton.click();
     }
 
+    public void fillName(String firstNameValue, String middleNameValue, String lastNameValue) {
+        name.click();
+        firstName.sendKeys(firstNameValue);
+        middleName.sendKeys(middleNameValue);
+        lastName.sendKeys(lastNameValue);
+        saveButton.click();
+    }
+
     public void agreeWithPrivacyPolicy() {
         if (!privacy.isSelected()) {
             privacy.click();
@@ -144,20 +157,56 @@ public class QuoteForm extends Quote{
     }
 
     public void fillCertainField(String fieldName, String value){
-        username.sendKeys(value);
-    }
+        switch (fieldName){
+            case "username":
+                username.clear();
+                username.sendKeys(value);
+                break;
 
+            case "email":
+                email.clear();
+                email.sendKeys(value);
+                break;
 
-    public String fieldError(){
+            case "password":
+                password.clear();
+                password.sendKeys(value);
+                break;
 
-        String err = usernameError.getText();
-        return err;
+            case "confirmPassword":
+                confirmPassword.clear();
+                confirmPassword.sendKeys(value);
+                break;
+            default:
+                throw new RuntimeException("Unrecognized field: " + fieldName);
+        }
+
     }
 
     public String fieldValue(){
-        String value = name.getAttribute("value");
-        return value;
+        return name.getAttribute("value");
     }
+
+    public String getErrorFieldText(String fieldName) {
+        return errorElement(fieldName).getText();
+    }
+
+
+    public boolean isErrorFieldDisplayed(String fieldName) {
+        boolean isDisplayed;
+        try {
+            isDisplayed = errorElement(fieldName).isDisplayed();
+        } catch (NoSuchElementException e) {
+            isDisplayed = false;
+        }
+        return isDisplayed;
+    }
+
+    public String getUsernameErrorText() {
+        return usernameError.getText();
+    }
+
+
 
 
 

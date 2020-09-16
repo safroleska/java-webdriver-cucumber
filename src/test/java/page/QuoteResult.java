@@ -14,13 +14,11 @@ public class QuoteResult extends Quote{
 
 
     public String requiredFieldsValue(){
-        String allValue = resultValue.getText();
-        return allValue;
+        return resultValue.getText();
     }
 
     public String optionalFieldsValue(){
-        String requiredValue = resultValue.getText();
-        return  requiredValue;
+        return  resultValue.getText();
     }
 
 

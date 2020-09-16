@@ -18,6 +18,7 @@ import static support.TestContext.*;
 public class MarketStepDefs {
     @Given("I go to {string} page")
     public void iGoToPage(String page) throws InterruptedException {
+
 //        switch (page){
 //            case "quote": getDriver().get("https://skryabin.com/market/quote.html");
 //            break;

@@ -103,6 +103,33 @@ public class QuoteStepDefs {
 
     @Then("I see {string} error message {string}")
     public void iSeeErrorMessage(String fieldName, String error) {
-        assertThat(form.fieldError()).contains(error);
+        assertThat(form.getErrorFieldText(fieldName)).contains(error);
+
+        //        switch (errorField) {
+//            case "username":
+//                assertThat(form.getUsernameErrorText()).isEqualTo(errorMessage);
+//                break;
+//            case "email":
+//                assertThat(form.getEmailErrorText()).isEqualTo(errorMessage);
+//                break;
+//            default:
+//                throw new RuntimeException("Unrecognized field: " + errorField);
+//        }
+    }
+
+    @When("I fill out name field with first name {string}, middle name {string}, last name {string}")
+    public void iFillOutNameFieldWithFirstNameMiddleNameLastName(String firstName, String middleName, String lastName) {
+        form.fillName(firstName, middleName, lastName);
+    }
+
+    @When("I fill out {string} field with {string}")
+    public void iFillOutFieldWith(String nameField, String value) {
+        form.fillCertainField(nameField,value);
+    }
+
+    @Then("I don't see {string} error message")
+    public void iDonTSeeErrorMessage(String errorField) {
+        assertThat(form.isErrorFieldDisplayed(errorField)).isFalse();
+
     }
 }

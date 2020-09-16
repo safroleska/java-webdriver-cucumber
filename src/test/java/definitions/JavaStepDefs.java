@@ -219,8 +219,110 @@ public class JavaStepDefs {
 //        swapTwoNumInArr(1,3,new int[] {1,2,3,4,5});
         int[] arr={4,5,8,2,9,1};
         sortArr(arr);
+        System.out.println(isPrime(2));
+        System.out.println(isPrime(1));
+        System.out.println(isPrime(0));
+        System.out.println(isPrime(-4341));
+        System.out.println(isPrime(8));
+        System.out.println(isPrime(9));
+        System.out.println(isPrime(97));
+        System.out.println(isPrime(Integer.MAX_VALUE));
+
+        for (int i = 1; i < 500; i++) {
+            if (isPrime(i)) {
+                System.out.print(i + " ");
+            }
+        }
 
     }
+
+
+
+
+    //        int[] unsortedArr = {5, 8, 7, 5, 1};
+//        System.out.println(findSum(unsortedArr, 6));
+//        System.out.println(findSum(unsortedArr, 8));
+//        System.out.println(findSum(unsortedArr, 5));
+//        System.out.println(factorial(0));
+//        System.out.println(factorial(5));
+//        int[] arr1 = {6, 2, 3, 5, 9};
+//        int[] arr2 = {6, 2, 9, 5, 7};
+//        find2MaxNumbers(arr2);
+//        for (int i = 1; i <= 11; i++) {
+//            System.out.print(fib(i) + " ");
+//        }
+
+    boolean isPrime(int num) {
+        System.out.println("Checking if " + num + " is prime...");
+        if (num < 2) {
+            return false;
+        }
+
+        if (num % 2 == 0 && num != 2) {
+            return false;
+        }
+
+        double sqrt = Math.sqrt(num);
+        for (int i = 3; i <= sqrt; i+=2) {
+            if (num % i == 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+    long fib(long num) {
+        if (num == 0 || num == 1) {
+            return num;
+        }
+        return fib(num - 1) + fib(num - 2);
+    }
+
+
+    // 1 1 2 3 5 8 13 21 35 55 89
+    long fibFor(int seq) {
+        long prevFib = 0;
+        long nextFib = 1;
+        for (int i = 1; i < seq; i++) {
+            long temp = nextFib;
+            nextFib = prevFib + nextFib;
+            prevFib = temp;
+        }
+        return nextFib;
+    }
+
+    // O (n2)
+    void find2MaxNumbers(int[] arr) {
+        System.out.println("Two max num");
+        int max1 = Integer.MIN_VALUE;
+        int max2 = Integer.MIN_VALUE;
+        for (int i = 0; i < arr.length; i++) {
+            if (max1 < arr[i]) {
+                max2 = max1;
+                max1 = arr[i];
+            } else if (max2 < arr[i]) {
+                max2 = arr[i];
+            }
+        }
+        System.out.println("First max: " + max1 + " Second max: " + max2);
+    }
+
+
+
+    // O(n)
+    int maxNum(int[] arr) {
+        System.out.println("Max num");
+        int max = arr[0];
+        for (int i = 1; i < arr.length; i++) {
+            if (max < arr[i]) {
+                max = arr[i];
+            }
+        }
+        return max;
+    }
+
+
     void sortArr(int[] arr){
         for (int i=0; i<arr.length; i++){
             for (int j=i+1; j< arr.length-1;j++){
