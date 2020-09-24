@@ -29,8 +29,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.openqa.selenium.support.ui.ExpectedConditions.invisibilityOf;
 import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOf;
 import static support.TestContext.*;
+import page.*;
 
 public class UspsStepDefs {
+    UspsHome uspsHome = new UspsHome();
+    UspsLookupByZip uspsLookupByZip = new UspsLookupByZip();
+    UspsByAddressForm uspsByAddressForm = new UspsByAddressForm();
+    UspsByAddressResult uspsByAddressResult = new UspsByAddressResult();
+    UspsPriceCalculator calculator = new UspsPriceCalculator();
+    UspsPostcardPriceCalculator postcardPriceCalculator = new UspsPostcardPriceCalculator();
+
     @When("Go to Lookup ZIP page by address")
     public void goToLookupZIPPageByAddress() {
 //        getDriver().findElement(By.xpath("//*[@id='mail-ship-width']")).click();
@@ -96,7 +104,7 @@ public class UspsStepDefs {
 
     @And("I define {string} quantity")
     public void iDefineQuantity(String num) {
-        getDriver().findElement(By.xpath("//*[@placeholder='Quantity']")).sendKeys("2");
+        getDriver().findElement(By.xpath("//*[@placeholder='Quantity']")).sendKeys(num);
         getDriver().findElement(By.xpath("//*[@type='button'][@value='Calculate']")).click();
 
     }
@@ -453,6 +461,57 @@ public class UspsStepDefs {
                 break;
             }
         }
+    }
+
+    @When("I go to Lookup ZIP page by address oop")
+    public void iGoToLookupZIPPageByAddressOop() {
+        uspsHome.goToLookupByZip();
+        uspsLookupByZip.clickFindByAddress();
+    }
+
+    @And("I fill out {string} street, {string} city, {string} state oop")
+    public void iFillOutStreetCityStateOop(String street, String city, String state) {
+        uspsByAddressForm.fillStreet(street);
+        uspsByAddressForm.fillCity(city);
+        uspsByAddressForm.selectState(state);
+        uspsByAddressForm.clickFind();
+    }
+
+    @Then("I validate {string} zip code exists in the result oop")
+    public void iValidateZipCodeExistsInTheResultOop(String zip) {
+        String actualTotalResult = uspsByAddressResult.getSearchResult();
+        assertThat(actualTotalResult).contains(zip);
+
+        boolean areAllItemsContainZip = uspsByAddressResult.areAllResultsContainZip(zip);
+        assertThat(areAllItemsContainZip).isTrue();
+    }
+
+    @When("I go to Calculate Price Page oop")
+    public void iGoToCalculatePricePageOop() {
+        uspsHome.goToCalculatePrice();
+    }
+
+    @And("I select {string} with {string} shape oop")
+    public void iSelectWithShapeOop(String country, String shape) {
+       calculator.countrySelect(country);
+       calculator.shapeChoose(shape);
+    }
+
+
+
+// I do not understand why I get nullPointerException calling these two methods below. Please, help!
+
+
+
+    @And("I define {string} quantity oop")
+    public void iDefineQuantityOop(String num) {
+        postcardPriceCalculator.defineQuantity(num);
+    }
+
+    @Then("I calculate the price and validate cost is {string} oop")
+    public void iCalculateThePriceAndValidateCostIsOop(String costValue) {
+        postcardPriceCalculator.calculateThePrice();
+        assertThat(postcardPriceCalculator.validateCost()).isEqualTo(costValue);
     }
 }
 

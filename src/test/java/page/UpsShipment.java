@@ -33,6 +33,9 @@ public class UpsShipment extends Ups{
     @FindBy(id="originphone")
     private WebElement originPhone;
 
+    @FindBy(id="origincity")
+    private WebElement originCity;
+
     @FindBy(id="nbsBackForwardNavigationContinueButton")
     private WebElement submitButton;
 
@@ -44,6 +47,9 @@ public class UpsShipment extends Ups{
 
     @FindBy(id= "nbsCancelShipmentWarningYes")
     private WebElement warningCancelShipmentButton;
+
+    @FindBy(xpath = "//option[contains(text(),'California')]")
+    private WebElement selectCA;
 
 
 
@@ -60,10 +66,8 @@ public class UpsShipment extends Ups{
         originName.sendKeys(ups.get("name"));
         originAddress.sendKeys(ups.get("address"));
         originPostal.sendKeys(ups.get("zip"));
-        //don't know how to optimize these 2 steps
-        getWait().until(ExpectedConditions.textToBePresentInElementValue(By.xpath("//input[@id='origincity']"),"LOS ALTOS" ));
-        getWait().until(ExpectedConditions.elementToBeSelected(By.xpath("//option[contains(text(),'California')]")));
-
+        waitUntilContainsText(originCity,"LOS ALTOS");
+        waitToBeSelected(selectCA);
         originEmail.sendKeys(ups.get("email"));
         originPhone.sendKeys(ups.get("phone"));
     }

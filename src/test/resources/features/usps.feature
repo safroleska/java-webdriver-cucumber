@@ -4,10 +4,10 @@
 
     @usps1
     Scenario: Validate ZIP code for Portnov Computer School
-      Given I go to "usps" page
-      When Go to Lookup ZIP page by address
-      And I fill out "4970 El Camino Real" street, "Los Altos" city, "CA" state
-      Then I validate "94022" zip code exists in the result
+      Given I open "usps" page
+      When I go to Lookup ZIP page by address oop
+      And I fill out "4970 El Camino Real" street, "Los Altos" city, "CA" state oop
+      Then I validate "94022" zip code exists in the result oop
 
     @usps2
     Scenario: Calculate price
@@ -85,6 +85,8 @@
       And I submit "Schedule an Appointment"
       And verify "Passport Renewal" service exists
 
+
+
     @usps11
     Scenario: PO Box
       Given I go to "usps" page
@@ -92,6 +94,16 @@
       And I reserve new PO box for "94022"
       Then I verify that "Los Altos — Post Office™" present
       And I verify that "Size 5-XL" PO Box is available in "Los Altos — Post Office™"
+
+    @usps12
+    Scenario: Calculate price oop
+      Given I open "usps" page
+      When I go to Calculate Price Page oop
+      And I select "Canada" with "Postcard" shape oop
+#      And I wait for 3 sec
+      And I define "2" quantity oop
+      And I wait for 3 sec
+      Then I calculate the price and validate cost is "$2.40" oop
 
 
 

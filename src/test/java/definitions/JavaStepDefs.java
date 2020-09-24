@@ -217,22 +217,25 @@ public class JavaStepDefs {
 //        System.out.println(findSum(unsortedArr,num));
 //        System.out.println(factorial(5));
 //        swapTwoNumInArr(1,3,new int[] {1,2,3,4,5});
-        int[] arr={4,5,8,2,9,1};
-        sortArr(arr);
-        System.out.println(isPrime(2));
-        System.out.println(isPrime(1));
-        System.out.println(isPrime(0));
-        System.out.println(isPrime(-4341));
-        System.out.println(isPrime(8));
-        System.out.println(isPrime(9));
-        System.out.println(isPrime(97));
-        System.out.println(isPrime(Integer.MAX_VALUE));
+        int[] arr={4,5,8,5,9,1};
+//        sortArr(arr);
+//        System.out.println(isPrime(2));
+//        System.out.println(isPrime(1));
+//        System.out.println(isPrime(0));
+//        System.out.println(isPrime(-4341));
+//        System.out.println(isPrime(8));
+//        System.out.println(isPrime(9));
+//        System.out.println(isPrime(97));
+//        System.out.println(isPrime(Integer.MAX_VALUE));
+//
+//        for (int i = 1; i < 500; i++) {
+//            if (isPrime(i)) {
+//                System.out.print(i + " ");
+//            }
+//        }
+//        System.out.println(ifArrayContainsDuplicates(arr));
 
-        for (int i = 1; i < 500; i++) {
-            if (isPrime(i)) {
-                System.out.print(i + " ");
-            }
-        }
+
 
     }
 
@@ -251,6 +254,21 @@ public class JavaStepDefs {
 //        for (int i = 1; i <= 11; i++) {
 //            System.out.print(fib(i) + " ");
 //        }
+//    void countCharacters(String str){
+//
+//        for(int i=0;i<str.length();i++){
+//            int count=1;
+//            for(int j=i+1; j<str.length(); j++){
+//                if(str.charAt(i)==str.charAt(j)){
+//                    count++;
+//                }
+//
+//            }
+//            System.out.print(str.charAt(i)+" "+count+"; ");
+//
+//        }
+//
+//    }
 
     boolean isPrime(int num) {
         System.out.println("Checking if " + num + " is prime...");
@@ -365,7 +383,6 @@ public class JavaStepDefs {
 
     }
 //    Write a function that find 2 max numbers in an array
-//    Write a function that finds if array contains duplicates
 //    Write a function that counts number of each character in a string
 //    Write a	function to	find the largest element in an array and test it
 //    Write a	function that reverses	string	without	extra string variable
@@ -387,6 +404,18 @@ public class JavaStepDefs {
 //        }
 //
 //    }
+
+    boolean ifArrayContainsDuplicates(int[] arr){
+        for (int i=0; i<arr.length; i++){
+            for (int j=i+1; j<arr.length; j++){
+                if (arr[i]==arr[j]){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     boolean isPalindrome1(String word){
         int j=0;
         for (int i=word.length()-1;i>=word.length()/2; i--){
