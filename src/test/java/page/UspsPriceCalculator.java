@@ -6,7 +6,7 @@ import org.openqa.selenium.support.ui.Select;
 
 import static support.TestContext.getDriver;
 
-public class UspsPriceCalculator {
+public class UspsPriceCalculator extends Page{
 
     private WebElement shape(String shape) {
         return getDriver().findElement(By.xpath("//*[@value='"+shape+"']"));

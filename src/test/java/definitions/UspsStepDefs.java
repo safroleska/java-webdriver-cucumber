@@ -497,12 +497,6 @@ public class UspsStepDefs {
        calculator.shapeChoose(shape);
     }
 
-
-
-// I do not understand why I get nullPointerException calling these two methods below. Please, help!
-
-
-
     @And("I define {string} quantity oop")
     public void iDefineQuantityOop(String num) {
         postcardPriceCalculator.defineQuantity(num);

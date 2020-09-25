@@ -3,7 +3,7 @@ package page;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-public class UspsPostcardPriceCalculator {
+public class UspsPostcardPriceCalculator extends Page{
 
     @FindBy(xpath = "//*[@placeholder='Quantity']")
     private WebElement quantity;
