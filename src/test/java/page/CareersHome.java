@@ -14,8 +14,10 @@ public class CareersHome extends Page{
     @FindBy(xpath = "//*[contains(@href,'login')]")
     private WebElement login;
 
-    public void clickLoginButton(){
+    public CareersLogin clickLoginButton(){
+
         login.click();
+        return new CareersLogin();
     }
 
 
