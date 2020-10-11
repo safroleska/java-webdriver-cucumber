@@ -25,20 +25,66 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 public class TestContext {
 
     private static WebDriver driver;
+    private static String timestamp;
+
+    private static Map<String, Object> testData = new HashMap<>();
+
+    public static Map<String, Object> getTestDataMap(String key) {
+        return (Map<String, Object>) testData.get(key);
+    }
+
+    public static Integer getTestDataInteger(String key) {
+        return (Integer) testData.get(key);
+    }
+
+    public static String getTestDataString(String key) {
+        return (String) testData.get(key);
+    }
+
+    public static void setTestData(String key, Object value) {
+        testData.put(key, value);
+    }
+
+
+    public static String getTimestamp() {
+        return timestamp;
+    }
+
+    public static void setTimestamp() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("+yyyy-MM-dd-h-mm-sss");
+        timestamp = dateFormat.format(new Date());
+    }
 
     public static WebDriver getDriver() {
         return driver;
     }
 
-    public static Map<String, String> getData(String fileName)  {
+    public static Map<String, String> getPosition(String title) {
+        Map<String, String> position = getData(title);
+        String timestampedTitle = position.get("title");
+        if (timestampedTitle != null) {
+            position.put("title", timestampedTitle + getTimestamp());
+        }
 
+        String dateOpen = position.get("dateOpen");
+        if (dateOpen != null) {
+            String isoDateOpen = new SimpleDateFormat("yyyy-MM-dd").format(new Date(dateOpen));
+            position.put("dateOpen", isoDateOpen);
+        }
+
+        return position;
+    }
+
+    public static Map<String, String> getData(String fileName) {
         try {
             String path = System.getProperty("user.dir") + "/src/test/resources/data/" + fileName + ".yml";
             File file = new File(path);
@@ -50,11 +96,11 @@ public class TestContext {
         }
     }
 
-    public static WebDriverWait getWait(){
+    public static WebDriverWait getWait() {
         return getWait(5);
     }
 
-    public static WebDriverWait getWait(int timeout){
+    public static WebDriverWait getWait(int timeout) {
         return new WebDriverWait(driver, timeout);
     }
 
@@ -62,7 +108,7 @@ public class TestContext {
         return new Actions(driver);
     }
 
-    public static JavascriptExecutor getExecutor(){
+    public static JavascriptExecutor getExecutor() {
         return (JavascriptExecutor) driver;
     }
 
