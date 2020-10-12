@@ -1,15 +1,11 @@
 package page;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 
 
 import java.util.List;
-
-import static support.TestContext.*;
 
 public class CareersRecruit extends CareersHeader {
 
@@ -26,6 +22,8 @@ public class CareersRecruit extends CareersHeader {
         return getByXpath("//h4[text()='" + title + "']/ancestor::div[contains(@class,'card')]//button");
     }
 
+    @FindBy(xpath = "//h4[contains(text(),'New Position')]")
+    private WebElement newPositionButton;
 
 
 //    @FindBy(xpath = "//div[@class='container']//div[@class='card-body']")
@@ -70,6 +68,15 @@ public class CareersRecruit extends CareersHeader {
         } catch (NoSuchElementException e) {
             return false;
         }
+    }
+
+    public CareersOpenPosition clickCreateNewPosition(){
+        newPositionButton.click();
+        return new CareersOpenPosition();
+    }
+
+    public Object[] listOfCreatedPositions(){
+        return positionList("automation").toArray();
     }
 
 

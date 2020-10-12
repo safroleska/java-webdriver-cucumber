@@ -84,6 +84,17 @@ public class TestContext {
         return position;
     }
 
+    public static Map<String,String> getCandidate(String role){
+        Map<String,String > candidate = getData(role);
+        String timestampedEmail = candidate.get("email");
+        if(timestampedEmail != null) {
+            String[] emailComp = timestampedEmail.split("@");
+            candidate.put("email", emailComp[0] + getTimestamp() + "@" + emailComp[1]);
+        }
+        return candidate;
+    }
+
+
     public static Map<String, String> getData(String fileName) {
         try {
             String path = System.getProperty("user.dir") + "/src/test/resources/data/" + fileName + ".yml";

@@ -79,4 +79,61 @@ public class RestStepDefs {
             assertThat(position.get("id")).isNotEqualTo(deletedId);
         }
     }
+
+    @When("I create via REST {string} candidate")
+    public void iCreateViaRESTCandidate(String role) {
+        new RestClient().createCandidate(getCandidate(role));
+    }
+
+    @Then("I verify via REST new {string} candidate is in the list")
+    public void iVerifyViaRESTNewCandidateIsInTheList(String type) {
+        List<Map<String, Object>> actualCandiates= new RestClient().getCandidates();
+        Object expectedCandidateId = getTestDataMap("newCandidate").get("id");
+        Map<String, String> expectedCandidate = getCandidate(type);
+
+        boolean isFound = false;
+        for (Map<String, Object> actualCandidate : actualCandiates) {
+            if (actualCandidate.get("id").equals(expectedCandidateId)) {
+                isFound = true;
+                break;
+            }
+        }
+        assertThat(isFound).isTrue();
+
+
+    }
+
+    @When("I update via REST {string} candidate")
+    public void iUpdateViaRESTCandidate(String type) {
+        Map<String, String> updatedCandidate = getCandidate(type + "_updated");
+        Object id = getTestDataMap("newCandidate").get("id");
+        new RestClient().updateCandidate(updatedCandidate, id);
+    }
+
+    @Then("I verify via REST new {string} candidate is updated")
+    public void iVerifyViaRESTNewCandidateIsUpdated(String type) {
+        Object expectedCandidateId = getTestDataMap("newCandidate").get("id");
+        Map<String, Object> actualCandidate = new RestClient().getCandidate(expectedCandidateId);
+        Map<String, String> expectedFields = getCandidate(type + "_updated");
+
+        for (String key : expectedFields.keySet()) {
+            System.out.println("Verifying " + key);
+            assertThat(actualCandidate.get(key)).isEqualTo(expectedFields.get(key));
+        }
+    }
+
+    @When("I delete via REST new candidate")
+    public void iDeleteViaRESTNewCandidate() {
+        Object expectedCandidateId = getTestDataMap("newCandidate").get("id");
+        new RestClient().deleteCandidateById(expectedCandidateId);
+    }
+
+    @Then("I verify via REST new candidate is deleted")
+    public void iVerifyViaRESTNewCandidateIsDeleted() {
+        Object deletedId = getTestDataMap("newCandidate").get("id");
+        List<Map<String , Object>> actualCandidates = new RestClient().getCandidates();
+        for (Map<String, Object> candidate: actualCandidates){
+            assertThat(candidate.get("id")).isNotEqualTo(deletedId);
+        }
+    }
 }

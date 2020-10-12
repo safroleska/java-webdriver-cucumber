@@ -134,4 +134,105 @@ public class RestClient {
                 .statusCode(204);
     }
 
+    public Map<String, Object> createCandidate(Map<String, String> role){
+//        return RestAssured.given()
+//                .log().all()
+//                .baseUri(baseUrl)
+//                .basePath("candidates")
+//                .header(CONTENT_TYPE, JSON)
+//                .header(AUTH, loginToken)
+//                .body(role)
+//                .when()
+//                .post()
+//                .then()
+//                .log().all()
+//                .statusCode(201)
+//                .extract()
+//                .jsonPath()
+//                .getMap("");
+
+        RequestSpecification request = RestAssured.given()
+                .log().all()
+                .baseUri(baseUrl)
+                .basePath("candidates")
+                .header(CONTENT_TYPE, JSON)
+                .header(AUTH, loginToken)
+                .body(role);
+        Response response = request.when()
+                .post();
+        Map<String, Object> result = response.then()
+                .log().all()
+                .statusCode(201)
+                .extract()
+                .jsonPath()
+                .getMap("");
+
+        setTestData("newCandidate", result);
+
+        return result;
+
+    }
+
+    public List<Map<String, Object>> getCandidates() {
+        return RestAssured.given()
+                .log().all()
+                .baseUri(baseUrl)
+                .basePath("candidates")
+                .when()
+                .get()
+                .then()
+                .log().all()
+                .statusCode(200)
+                .extract()
+                .jsonPath()
+                .getList("");
+    }
+
+    public Map<String, Object> getCandidate(Object id) {
+        return RestAssured.given()
+                .log().all()
+                .baseUri(baseUrl)
+                .basePath("candidates/" + id)
+                .when()
+                .get()
+                .then()
+                .log().all()
+                .statusCode(200)
+                .extract()
+                .jsonPath()
+                .getMap("");
+    }
+
+    public Map<String, Object> updateCandidate(Map<String, String> fields, Object id) {
+        return RestAssured.given()
+                .log().all()
+                .baseUri(baseUrl)
+                .basePath("candidates/" + id)
+                .header(CONTENT_TYPE, JSON)
+                .header(AUTH, loginToken)
+                .body(fields)
+                .when()
+                .patch()
+                .then()
+                .log().all()
+                .statusCode(200)
+                .extract()
+                .jsonPath()
+                .getMap("");
+    }
+
+    public void deleteCandidateById(Object id) {
+        RestAssured.given()
+                .log().all()
+                .baseUri(baseUrl)
+                .basePath("candidates/" + id)
+                .header(AUTH, loginToken)
+                .when()
+                .delete()
+                .then()
+                .log().all()
+                .statusCode(204);
+    }
+
+
 }
