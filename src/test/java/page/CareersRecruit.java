@@ -6,6 +6,9 @@ import org.openqa.selenium.support.FindBy;
 
 
 import java.util.List;
+import java.util.Map;
+
+import static support.TestContext.getData;
 
 public class CareersRecruit extends CareersHeader {
 
@@ -25,7 +28,10 @@ public class CareersRecruit extends CareersHeader {
     @FindBy(xpath = "//h4[contains(text(),'New Position')]")
     private WebElement newPositionButton;
 
-
+    @FindBy(xpath = "//*[@class='card-title']")
+    private WebElement allPositions;
+//div[contains(@class,'card')]
+//div[@class='container']
 //    @FindBy(xpath = "//div[@class='container']//div[@class='card-body']")
 //    private WebElement list;
 
@@ -75,8 +81,9 @@ public class CareersRecruit extends CareersHeader {
         return new CareersOpenPosition();
     }
 
-    public Object[] listOfCreatedPositions(){
-        return positionList("automation").toArray();
+    public List<WebElement> listOfCreatedPositions(String title){
+        return positionList(title);
+
     }
 
 

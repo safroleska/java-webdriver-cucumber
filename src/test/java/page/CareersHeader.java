@@ -4,6 +4,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
+import static support.TestContext.getDriver;
+
 
 public class CareersHeader extends Page{
 
@@ -15,6 +17,15 @@ public class CareersHeader extends Page{
 
     @FindBy(xpath="//span[@class='logout-box']/a")
     private WebElement loggedUserName;
+
+    private WebElement positionCard(String title) {
+        return getDriver().findElement(By.xpath("//*[@class='position-name'][contains(text(),'"+title+"')]"));
+    }
+//    @FindBy(xpath ="//*[contains(@href,'candidates')]")
+//    private WebElement loggedCandidateTitle;
+
+    //*[@class='position-name'][contains(text(),'Principal Applications Developer')]
+//*[contains(@href,'candidates')]
 
     public CareersLogin clickLogin() {
         click(loginButton);
@@ -39,4 +50,20 @@ public class CareersHeader extends Page{
         recruitButton.click();
         return new CareersRecruit();
     }
+
+    public CareersPosition chosePosition(String title){
+        clickWithJS(positionCard(title));
+        return new CareersPosition();
+    }
+
+    public String nameCandidate(){
+        return loggedUserName.getText();
+    }
+
+    public CareersProfile clickCandidate(){
+        loggedUserName.click();
+        return new CareersProfile();
+    }
+
+
 }

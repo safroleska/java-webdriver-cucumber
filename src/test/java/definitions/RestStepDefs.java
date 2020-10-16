@@ -3,8 +3,14 @@ package definitions;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import io.restassured.response.ExtractableResponse;
+import io.restassured.response.Response;
+import org.apache.commons.codec.binary.Hex;
 import support.RestClient;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -100,15 +106,17 @@ public class RestStepDefs {
         }
         assertThat(isFound).isTrue();
 
-
     }
 
     @When("I update via REST {string} candidate")
     public void iUpdateViaRESTCandidate(String type) {
+//        File resume = getFile("resume", fileType);
+
         Map<String, String> updatedCandidate = getCandidate(type + "_updated");
         Object id = getTestDataMap("newCandidate").get("id");
         new RestClient().updateCandidate(updatedCandidate, id);
     }
+
 
     @Then("I verify via REST new {string} candidate is updated")
     public void iVerifyViaRESTNewCandidateIsUpdated(String type) {
@@ -135,5 +143,27 @@ public class RestStepDefs {
         for (Map<String, Object> candidate: actualCandidates){
             assertThat(candidate.get("id")).isNotEqualTo(deletedId);
         }
+    }
+
+    @When("I add via REST {string} resume to a new candidate")
+    public void iAddViaRESTResumeToANewCandidate(String fileType) {
+        File resume = getFile("resume", fileType);
+        new RestClient().addResume(resume, getTestDataMap("newCandidate").get("id"));
+    }
+
+
+    @Then("I verify via REST that {string} resume has been added")
+    public void iVerifyViaRESTThatResumeHasBeenAdded(String fileType) throws IOException {
+        ExtractableResponse<Response> response = new RestClient().getResume(getTestDataMap("newCandidate").get("id"));
+        String disposition = response.header("content-disposition");
+        assertThat(disposition).isEqualTo("attachment; filename=resume." + fileType);
+
+//        FileInputStream stream = getStream("file", "pdf");
+
+//        String signature = Hex.encodeHexString(stream.readAllBytes());
+//        assertThat(signature).startsWith("255044462d");
+
+//        System.out.println(signature);
+
     }
 }

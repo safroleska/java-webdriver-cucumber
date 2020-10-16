@@ -2,9 +2,11 @@ package support;
 
 import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
+import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -232,6 +234,34 @@ public class RestClient {
                 .then()
                 .log().all()
                 .statusCode(204);
+    }
+
+    public void addResume(File resume, Object candidateId) {
+        RestAssured.given()
+                .log().all()
+                .baseUri(baseUrl)
+                .basePath("candidates/" + candidateId + "/resume")
+                .header(AUTH, loginToken)
+                .multiPart("resume", resume)
+                .when()
+                .post()
+                .then()
+                .log().all()
+                .statusCode(201);
+    }
+
+    public ExtractableResponse<Response> getResume(Object candidateId) {
+        return RestAssured.given()
+                .log().all()
+                .baseUri(baseUrl)
+                .basePath("candidates/" + candidateId + "/resume")
+                .header(AUTH, loginToken)
+                .when()
+                .get()
+                .then()
+                .log().all()
+                .statusCode(200)
+                .extract();
     }
 
 

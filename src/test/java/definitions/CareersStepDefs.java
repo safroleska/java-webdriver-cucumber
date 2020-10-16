@@ -3,8 +3,10 @@ package definitions;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import org.openqa.selenium.WebElement;
 import page.*;
 import support.RestClient;
+import support.TestContext;
 
 
 import java.util.List;
@@ -75,19 +77,9 @@ public class CareersStepDefs {
 
     @Then("I verify new position is created")
     public void iVerifyNewPositionIsCreated() {
-//        Map<String, String> position = getData("automation");
-//        Object[] actualPositions = new CareersRecruit().listOfCreatedPositions();
-//        Object expectedPositionTitle = position.get("title");
-//
-//
-//        boolean isFound = false;
-//        for (Object actualPosition : actualPositions) {
-//            if(actualPosition.equals(expectedPositionTitle)){
-//                isFound = true;
-//                break;
-//            }
-//        }
-//        assertThat(isFound).isTrue();
+        Map<String, String> position = getData("automation");
+        assertThat(new CareersRecruit().listOfCreatedPositions(position.get("title")).contains(position.get("title")));
+
     }
 
     @When("I remove new position")
@@ -102,5 +94,42 @@ public class CareersStepDefs {
         boolean isVisible = new CareersRecruit().isPositionVisible(getData("automation").get("title"));
         assertThat(isVisible).isFalse();
 
+    }
+
+    @When("I update new position")
+    public void iUpdateNewPosition() {
+        Map<String, String> position = getData("automation");
+        new CareersHeader().chosePosition(position.get("title")).clickEdit().editPosition().clickApply();
+
+    }
+
+    @Then("I verify new position is updated")
+    public void iVerifyNewPositionIsUpdated() {
+        Map<String, String> position = getData("automation");
+        Map<String, String> update = getData("automation_updated");
+        assertThat(new CareersMyJobs().positionInfo(position.get("title"))).contains(update.get("city")).contains(update.get("address"));
+    }
+
+    @And("I submit application to a new position")
+    public void iSubmitApplicationToANewPosition() {
+        Map<String, String> position = getData("automation");
+        new CareersHome().clickApply().fillApplyForm().clickSubmit();
+    }
+
+    @Then("I verify new candidate is created")
+    public void iVerifyNewCandidateIsCreated() {
+        Map<String,String > candidate = TestContext.getCandidate("qa");
+        String expectedNameCandidate = candidate.get("firstName")+" "+candidate.get("lastName");
+        assertThat(new CareersHeader().nameCandidate()).isEqualTo(expectedNameCandidate);
+    }
+
+    @When("I delete candidate profile")
+    public void iDeleteCandidateProfile() {
+        new CareersHeader().clickCandidate().clickDeleteAccount();
+    }
+
+    @Then("I verify new candidate is removed")
+    public void iVerifyNewCandidateIsRemoved() {
+        assertThat(new CareersHome().loginButtonIsDisplayed()).isTrue();
     }
 }

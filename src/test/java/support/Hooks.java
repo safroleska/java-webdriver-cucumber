@@ -9,15 +9,16 @@ import org.openqa.selenium.TakesScreenshot;
 import java.util.concurrent.TimeUnit;
 
 import static support.TestContext.getDriver;
+import static support.TestContext.getConfig;
 
 public class Hooks {
 
     @Before(order = 0)
     public void scenarioStart() {
         TestContext.initialize();
-//        TestContext.setTimestamp();
-        getDriver().manage().timeouts().pageLoadTimeout(300, TimeUnit.SECONDS);
-        getDriver().manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
+        TestContext.setTimestamp();
+        getDriver().manage().timeouts().pageLoadTimeout(getConfig().pageLoadTimeout, TimeUnit.SECONDS);
+        getDriver().manage().timeouts().implicitlyWait(getConfig().implicitTimeout, TimeUnit.SECONDS);
         getDriver().manage().deleteAllCookies();
     }
 
