@@ -19,10 +19,7 @@ import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.yaml.snakeyaml.Yaml;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
@@ -87,6 +84,15 @@ public class TestContext {
     public static File getFile(String fileName, String extension) {
         String path = System.getProperty("user.dir") + "/src/test/resources/data/" + fileName + "." + extension;
         return new File(path);
+    }
+
+    public static void saveFile(String fileName, String extension, byte[] byteArray) {
+        try(FileOutputStream stream = new FileOutputStream(getFile(fileName, extension))) {
+            stream.write(byteArray);
+            stream.flush();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static FileInputStream getStream(String fileName, String extension) {

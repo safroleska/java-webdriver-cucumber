@@ -15,7 +15,7 @@ import java.util.Map;
 import static support.TestContext.getTimestamp;
 import static support.TestContext.setTestData;
 
-public class RestClient {
+public class RestClient implements Loggable{
 
     private String baseUrl = "https://skryabin.com/recruit/api/v1/";
     private static String loginToken;
@@ -45,7 +45,7 @@ public class RestClient {
                 .getMap("");
 
         loginToken = "Bearer " + result.get("token");
-        System.out.println(loginToken);
+        getLogger().info(loginToken);
     }
 
     public Map<String, Object> createPosition(Map<String, String> position) {
@@ -76,6 +76,7 @@ public class RestClient {
     }
 
     public List<Map<String, Object>> getPositions() {
+        getLogger().info("Getting all positions");
         return RestAssured.given()
                 .log().all()
                 .baseUri(baseUrl)
@@ -91,6 +92,8 @@ public class RestClient {
     }
 
     public Map<String, Object> updatePosition(Map<String, String> fields, Object id) {
+        getLogger().info("Updating positions");
+
         return RestAssured.given()
                 .log().all()
                 .baseUri(baseUrl)
@@ -109,6 +112,8 @@ public class RestClient {
     }
 
     public Map<String, Object> getPosition(Object id) {
+        getLogger().info("Getting position id"+id);
+
         return RestAssured.given()
                 .log().all()
                 .baseUri(baseUrl)

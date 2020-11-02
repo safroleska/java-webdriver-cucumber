@@ -7,6 +7,8 @@ import org.openqa.selenium.logging.LogEntry;
 import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import support.Loggable;
+import support.Screenshot;
 
 import java.util.List;
 import java.util.logging.Level;
@@ -14,7 +16,7 @@ import java.util.logging.Level;
 import static support.TestContext.*;
 import static support.TestContext.getWait;
 
-public class Page {
+public class Page implements Loggable, Screenshot {
 
     // fields
     protected String url;
@@ -37,7 +39,7 @@ public class Page {
         LogEntries entries = getDriver().manage().logs().get(LogType.BROWSER);
         for (LogEntry entry : entries) {
             if (entry.getLevel().equals(Level.SEVERE)) {
-                System.err.println(entry);
+                logError(entry.toString());
                 return true;
             }
         }

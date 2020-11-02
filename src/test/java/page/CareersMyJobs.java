@@ -9,7 +9,6 @@ public class CareersMyJobs extends CareersHeader{
     }
 
     public String positionInfo(String title){
-
         return positionCard(title).getText();
     }
 }

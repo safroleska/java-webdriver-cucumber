@@ -15,6 +15,13 @@ public class CareersHeader extends Page{
     @FindBy(xpath="//a[@href='/recruit']/button")
     private WebElement recruitButton;
 
+    @FindBy(xpath="//button[contains(text(),'Careers')]")
+    private WebElement careersButton;
+
+    @FindBy(xpath="//button[contains(text(),'My Jobs')]")
+    private WebElement myJobButton;
+
+
     @FindBy(xpath="//span[@class='logout-box']/a")
     private WebElement loggedUserName;
 
@@ -61,8 +68,18 @@ public class CareersHeader extends Page{
     }
 
     public CareersProfile clickCandidate(){
-        loggedUserName.click();
+        click(loggedUserName);
         return new CareersProfile();
+    }
+
+    public CareersCareers clickCareersButton(){
+        click(careersButton);
+        return new CareersCareers();
+    }
+
+    public CareersMyJobs clickMyJobButton(){
+        click(myJobButton);
+        return new CareersMyJobs();
     }
 
 

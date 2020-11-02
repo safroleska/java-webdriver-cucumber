@@ -10,6 +10,7 @@ sdet:
 sdet_updated:
   address: "100 Main street"
   zip: "10000"
+
 qa:
   firstName: Richard
   lastName: Roe
@@ -20,3 +21,6 @@ qa:
   city: Los Altos
   state: California
   zip: "94040"
+qa_updated:
+  address: 15450 El Camino Real
+  city: San Diego

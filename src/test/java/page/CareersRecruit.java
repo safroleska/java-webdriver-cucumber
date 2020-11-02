@@ -3,6 +3,8 @@ package page;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import support.Loggable;
+import support.Screenshot;
 
 
 import java.util.List;
@@ -10,7 +12,7 @@ import java.util.Map;
 
 import static support.TestContext.getData;
 
-public class CareersRecruit extends CareersHeader {
+public class CareersRecruit extends CareersHeader implements Loggable, Screenshot {
 
     // dynamic element
     private WebElement positionCard(String title) {
@@ -63,6 +65,11 @@ public class CareersRecruit extends CareersHeader {
 
 
     public boolean isPositionVisible(String title) {
+        getLogger().info("Taking screenshot");
+        //the same:
+//        logError("Taking screenshot");
+
+        takeScreenshot();
 //        List<WebElement> cards = allPositionCards(title);
 //        if (cards.isEmpty()) {
 //            return false;

@@ -29,3 +29,16 @@ Feature: REST API automation for Careers project
     Then I verify via REST new "sdet" candidate is updated
     When I delete via REST new candidate
     Then I verify via REST new candidate is deleted
+
+  @rest3
+  Scenario: REST API Application CRUD
+    Given I login via REST as "recruiter"
+    When I create via REST "automation" position
+    And I create via REST "sdet" candidate
+    And I add via REST "pdf" resume to a new candidate
+    When I apply new candidate to a new position
+    Then I verify via REST new application is submitted
+    When I update via REST "rtf" resume of a new candidate
+    Then I verify via REST "rtf" resume of a new application is updated
+    When I delete via REST new application
+    Then I verify via REST new application is deleted
